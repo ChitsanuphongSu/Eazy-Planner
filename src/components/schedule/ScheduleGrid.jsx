@@ -1,16 +1,19 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useSchedule } from '../../contexts/ScheduleContext';
-import { DAYS_OF_WEEK, DAYS_SHORT, hexToRgba } from '../../utils/helpers';
+import { DAYS_SHORT, hexToRgba } from '../../utils/helpers';
 import { MapPin } from 'lucide-react';
 
-/* Height of one hour-row in pixels (CSS value including border) */
-const CELL_HEIGHT = 56;
+/*
+ * Pixel-per-minute constant.
+ * Every minute of time always maps to exactly this many CSS pixels.
+ * Grid lines, time labels, and schedule items all share this single constant
+ * so alignment is guaranteed.
+ */
+const PX_PER_MIN = 1; // 1 px per minute → 60 px per hour
 
 export default function ScheduleGrid({ onClickSlot, onClickItem }) {
   const { items, categories, settings } = useSchedule();
   const [hoveredSlot, setHoveredSlot] = useState(null);
-  const slotContainerRef = useRef(null);
-  const [actualCellHeight, setActualCellHeight] = useState(CELL_HEIGHT);
 
   const daysToShow = settings.showWeekend ? 7 : 5;
   const startH = Number(settings.startHour) || 6;
@@ -22,32 +25,18 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
     return h;
   }, [startH, endH]);
 
-  /* Measure the real rendered height of one cell after first paint */
-  useEffect(() => {
-    if (slotContainerRef.current) {
-      const firstCell = slotContainerRef.current.querySelector('[data-grid-cell]');
-      if (firstCell) {
-        const rect = firstCell.getBoundingClientRect();
-        if (rect.height > 0) setActualCellHeight(rect.height);
-      }
-    }
-  }, [hours]);
+  const totalMinutes = (endH - startH + 1) * 60;
+  const totalHeight = totalMinutes * PX_PER_MIN;
 
-  const cellH = actualCellHeight; // real pixel-height per hour row
+  /* Convert an hour:minute pair to a Y pixel offset from the top of the grid */
+  const timeToY = (hour, minute) => {
+    return ((Number(hour) - startH) * 60 + (Number(minute) || 0)) * PX_PER_MIN;
+  };
 
   const getItemStyle = (item) => {
-    const sH = Number(item.startHour);
-    const sM = Number(item.startMinute) || 0;
-    const eH = Number(item.endHour);
-    const eM = Number(item.endMinute) || 0;
-
-    // fractional hours from the first visible row
-    const startFrac = (sH - startH) + sM / 60;
-    const endFrac   = (eH - startH) + eM / 60;
-    const durationFrac = endFrac - startFrac;
-
-    const top    = startFrac * cellH;
-    const height = Math.max(durationFrac * cellH - 2, 26);
+    const top = timeToY(item.startHour, item.startMinute);
+    const bottom = timeToY(item.endHour, item.endMinute);
+    const height = Math.max(bottom - top - 2, 24);
 
     return {
       position: 'absolute',
@@ -77,6 +66,9 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
     return cat?.icon || '📌';
   };
 
+  const formatMin = (v) => String(Number(v) || 0).padStart(2, '0');
+  const formatHr = (v) => String(Number(v)).padStart(2, '0');
+
   return (
     <div style={{
       display: 'flex',
@@ -86,35 +78,42 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
       borderRadius: 'var(--radius-lg)',
       border: '1px solid var(--color-border-light)',
     }}>
-      {/* Time Column */}
+      {/* ── Time Label Column ── */}
       <div style={{
         flexShrink: 0,
         width: '64px',
         borderRight: '1px solid var(--color-border-light)',
         background: 'var(--color-bg)',
       }}>
-        <div style={{
-          height: '44px',
-          borderBottom: '1px solid var(--color-border-light)',
-        }} />
-        {hours.map(hour => (
-          <div key={hour} style={{
-            height: `${CELL_HEIGHT}px`,
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'center',
-            paddingTop: '4px',
-            fontSize: 'var(--font-size-xs)',
-            color: 'var(--color-text-muted)',
-            fontWeight: 500,
-            borderBottom: '1px solid var(--color-border-light)',
-          }}>
-            {`${String(hour).padStart(2, '0')}:00`}
-          </div>
-        ))}
+        {/* Day-header spacer */}
+        <div style={{ height: '44px', borderBottom: '1px solid var(--color-border-light)' }} />
+
+        {/* Time labels — same height system as the grid */}
+        <div style={{ position: 'relative', height: `${totalHeight}px` }}>
+          {hours.map(hour => (
+            <div
+              key={hour}
+              style={{
+                position: 'absolute',
+                top: `${timeToY(hour, 0)}px`,
+                width: '100%',
+                height: `${60 * PX_PER_MIN}px`,
+                display: 'flex',
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingTop: '4px',
+                fontSize: 'var(--font-size-xs)',
+                color: 'var(--color-text-muted)',
+                fontWeight: 500,
+              }}
+            >
+              {`${String(hour).padStart(2, '0')}:00`}
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Day Columns */}
+      {/* ── Day Columns ── */}
       <div style={{ display: 'flex', flex: 1, minWidth: 0 }}>
         {Array.from({ length: daysToShow }).map((_, dayIndex) => {
           const today = new Date().getDay();
@@ -159,18 +158,26 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
                 )}
               </div>
 
-              {/* Time Slots */}
-              <div ref={dayIndex === 0 ? slotContainerRef : undefined} style={{ position: 'relative', flex: 1 }}>
-                {/* Grid lines */}
+              {/* ── Grid + Items container ── */}
+              <div style={{
+                position: 'relative',
+                height: `${totalHeight}px`,
+                flexShrink: 0,
+              }}>
+                {/* Grid hour-lines (absolute, same coordinate system as items) */}
                 {hours.map(hour => {
+                  const y = timeToY(hour, 0);
                   const slotKey = `${dayIndex}-${hour}`;
                   const isHovered = hoveredSlot === slotKey;
                   return (
                     <div
                       key={hour}
-                      data-grid-cell
                       style={{
-                        height: `${CELL_HEIGHT}px`,
+                        position: 'absolute',
+                        top: `${y}px`,
+                        left: 0,
+                        right: 0,
+                        height: `${60 * PX_PER_MIN}px`,
                         borderBottom: '1px solid var(--color-border-light)',
                         background: isHovered ? 'var(--color-surface-hover)' : 'transparent',
                         cursor: 'pointer',
@@ -183,7 +190,7 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
                   );
                 })}
 
-                {/* Schedule Items */}
+                {/* Schedule Items (absolute, same coordinate system as grid lines) */}
                 {dayItems.map(item => (
                   <div
                     key={item.id}
@@ -206,7 +213,7 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
                       <span className="truncate" style={{ fontWeight: 600, lineHeight: 1.2 }}>{item.title}</span>
                     </div>
                     <span style={{ opacity: 0.9, fontSize: '10px', lineHeight: 1 }}>
-                      {`${String(Number(item.startHour)).padStart(2,'0')}:${String(Number(item.startMinute)||0).padStart(2,'0')} - ${String(Number(item.endHour)).padStart(2,'0')}:${String(Number(item.endMinute)||0).padStart(2,'0')}`}
+                      {`${formatHr(item.startHour)}:${formatMin(item.startMinute)} - ${formatHr(item.endHour)}:${formatMin(item.endMinute)}`}
                     </span>
                     {item.location && (
                       <span style={{ opacity: 0.85, fontSize: '9px', display: 'flex', alignItems: 'center', gap: '2px' }}>
