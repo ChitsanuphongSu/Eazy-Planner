@@ -23,8 +23,14 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
   };
 
   const getItemStyle = (item) => {
-    const startOffset = (item.startHour - settings.startHour) * 60 + (item.startMinute || 0);
-    const endOffset = (item.endHour - settings.startHour) * 60 + (item.endMinute || 0);
+    const sH = Number(item.startHour);
+    const sM = Number(item.startMinute) || 0;
+    const eH = Number(item.endHour);
+    const eM = Number(item.endMinute) || 0;
+    const refH = Number(settings.startHour);
+
+    const startOffset = (sH - refH) * 60 + sM;
+    const endOffset = (eH - refH) * 60 + eM;
     const duration = endOffset - startOffset;
     const top = (startOffset / 60) * 56;
     const height = Math.max((duration / 60) * 56 - 2, 26);
