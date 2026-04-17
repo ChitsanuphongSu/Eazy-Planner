@@ -21,6 +21,7 @@ export default function EventPanel({ onAddEvent, onEditEvent }) {
       border: '1px solid var(--color-border-light)',
       display: 'flex',
       flexDirection: 'column',
+      flexShrink: 0,
       overflow: 'hidden',
       animation: 'slideInRight 300ms ease forwards',
     }}>
@@ -28,6 +29,7 @@ export default function EventPanel({ onAddEvent, onEditEvent }) {
       <div style={{
         padding: '18px 20px',
         borderBottom: '1px solid var(--color-border-light)',
+        flexShrink: 0,
         background: isToday
           ? 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))'
           : 'var(--color-bg)',
@@ -166,7 +168,7 @@ export default function EventPanel({ onAddEvent, onEditEvent }) {
       </div>
 
       {/* Add Event Button */}
-      <div style={{ padding: '12px', borderTop: '1px solid var(--color-border-light)' }}>
+      <div style={{ padding: '12px', borderTop: '1px solid var(--color-border-light)', flexShrink: 0 }}>
         <button
           onClick={onAddEvent}
           className="btn btn-primary"
