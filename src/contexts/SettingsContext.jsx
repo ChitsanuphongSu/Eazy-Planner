@@ -17,6 +17,18 @@ export function SettingsProvider({ children }) {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', themePrefs.theme);
     document.documentElement.setAttribute('data-color', themePrefs.color);
+    
+    // Dynamically update mobile browser status bar color to match the top header's surface color
+    setTimeout(() => {
+      const surfaceColor = getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim();
+      let metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if (!metaThemeColor) {
+        metaThemeColor = document.createElement('meta');
+        metaThemeColor.name = "theme-color";
+        document.head.appendChild(metaThemeColor);
+      }
+      metaThemeColor.setAttribute('content', surfaceColor);
+    }, 50);
   }, [themePrefs]);
 
   useEffect(() => {
