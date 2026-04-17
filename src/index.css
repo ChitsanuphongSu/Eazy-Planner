@@ -135,6 +135,13 @@ html[data-color="blue"] {
   --color-accent: #C9DEF4;
   --color-accent-hover: #A4BCE3;
   --color-mint: #E8F0F5;
+  
+  --color-bg: #F6F8FC;
+  --color-bg-secondary: #EDF1F5;
+  --color-surface-hover: #F0F4F8;
+  --color-border: #D0DBE8;
+  --color-border-light: #E4E9F0;
+  --color-border-focus: #6B90D9;
 }
 
 html[data-color="pink"] {
@@ -146,6 +153,13 @@ html[data-color="pink"] {
   --color-accent: #F4C9D6;
   --color-accent-hover: #E3A4B8;
   --color-mint: #F5E8EC;
+  
+  --color-bg: #FCF6F8;
+  --color-bg-secondary: #F5EDF0;
+  --color-surface-hover: #F8F0F4;
+  --color-border: #E8D0DB;
+  --color-border-light: #F0E4E9;
+  --color-border-focus: #D96B90;
 }
 
 html[data-color="purple"] {
@@ -157,6 +171,13 @@ html[data-color="purple"] {
   --color-accent: #DCC9F4;
   --color-accent-hover: #C4A4E3;
   --color-mint: #EFE8F5;
+  
+  --color-bg: #FAF6FC;
+  --color-bg-secondary: #F2EDF5;
+  --color-surface-hover: #F6F0F8;
+  --color-border: #E0D0E8;
+  --color-border-light: #EBE4F0;
+  --color-border-focus: #A36BD9;
 }
 
 html[data-color="orange"] {
@@ -168,6 +189,13 @@ html[data-color="orange"] {
   --color-accent: #F4D6C9;
   --color-accent-hover: #E3BCA4;
   --color-mint: #F5EAE8;
+  
+  --color-bg: #FCF8F6;
+  --color-bg-secondary: #F5F0ED;
+  --color-surface-hover: #F8F4F0;
+  --color-border: #E8DBD0;
+  --color-border-light: #F0E9E4;
+  --color-border-focus: #D9906B;
 }
 
 /* ── Global Reset ── */
