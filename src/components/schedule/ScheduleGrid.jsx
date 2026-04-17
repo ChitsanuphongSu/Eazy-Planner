@@ -88,7 +88,7 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
         left: 0,
         zIndex: 10,
         boxShadow: '2px 0 8px rgba(0,0,0,0.03)',
-        minHeight: 'max-content',
+        minHeight: `${totalHeight + 44}px`,
       }}>
         {/* Day-header spacer */}
         <div style={{ height: '44px', borderBottom: '1px solid var(--color-border-light)' }} />
@@ -119,7 +119,7 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
       </div>
 
       {/* ── Day Columns ── */}
-      <div style={{ display: 'flex', flex: 1, minWidth: 'max-content', minHeight: 'max-content' }}>
+      <div style={{ display: 'flex', flex: 1, minWidth: 'max-content', minHeight: `${totalHeight + 44}px` }}>
         {Array.from({ length: daysToShow }).map((_, dayIndex) => {
           const today = new Date().getDay();
           const adjustedToday = today === 0 ? 6 : today - 1;
@@ -133,6 +133,7 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
               borderRight: dayIndex < daysToShow - 1 ? '1px solid var(--color-border-light)' : 'none',
               display: 'flex',
               flexDirection: 'column',
+              minHeight: `${totalHeight + 44}px`,
             }}>
               {/* Day Header */}
               <div style={{
