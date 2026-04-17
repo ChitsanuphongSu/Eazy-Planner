@@ -178,6 +178,8 @@ html, html[data-theme="light"] {
   --color-border: #D4E8DF;
   --color-border-light: #E8F2EC;
   --color-border-focus: var(--color-primary);
+  --color-today-bg: linear-gradient(to bottom, var(--color-accent), var(--color-surface));
+  --color-today-text: var(--color-primary);
   color-scheme: light;
 }
 
@@ -200,6 +202,8 @@ html[data-theme="dark"] {
   --color-border: #2D3632;
   --color-border-light: #252D2A;
   --color-border-focus: var(--color-primary);
+  --color-today-bg: var(--color-primary);
+  --color-today-text: #FFFFFF;
   
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);

@@ -143,10 +143,10 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
                 justifyContent: 'center',
                 fontWeight: 600,
                 fontSize: 'var(--font-size-sm)',
-                color: isToday ? 'var(--color-primary)' : 'var(--color-text-secondary)',
+                color: isToday ? 'var(--color-today-text)' : 'var(--color-text-secondary)',
                 borderBottom: '1px solid var(--color-border-light)',
                 background: isToday
-                  ? 'linear-gradient(to bottom, var(--color-accent), var(--color-surface))'
+                  ? 'var(--color-today-bg)'
                   : 'var(--color-bg)',
                 position: 'relative',
               }}>
