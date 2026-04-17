@@ -59,7 +59,7 @@ export default function LoginPage() {
           fontSize: 'var(--font-size-2xl)',
           color: 'var(--color-primary-dark)',
           marginBottom: '0.5rem',
-        }}>Planner</h1>
+        }}>FlowSpace</h1>
         
         <p style={{
           color: 'var(--color-text-muted)',
