@@ -4,12 +4,14 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ScheduleProvider } from './contexts/ScheduleContext';
 import { TodoProvider } from './contexts/TodoContext';
 import { CalendarProvider } from './contexts/CalendarContext';
+import { SettingsProvider } from './contexts/SettingsContext';
 import Sidebar from './components/layout/Sidebar';
 import SchedulePage from './pages/SchedulePage';
 import TodoPage from './pages/TodoPage';
 import CalendarPage from './pages/CalendarPage';
 import LoginPage from './pages/LoginPage';
-import { Leaf, LogOut } from 'lucide-react';
+import SettingsModal from './components/common/SettingsModal';
+import { Leaf, LogOut, Settings as SettingsIcon } from 'lucide-react';
 
 // Protect routes that require login
 function ProtectedRoute({ children }) {
@@ -28,6 +30,8 @@ function PublicRoute({ children }) {
 
 function MainLayout() {
   const { currentUser, logout } = useAuth();
+  const [settingsOpen, setSettingsOpen] = React.useState(false);
+  
   return (
     <div className="app-container">
       {/* Mobile Top Header (Hidden on Desktop) */}
@@ -59,9 +63,14 @@ function MainLayout() {
                 {currentUser.displayName ? currentUser.displayName.charAt(0) : '?'}
               </div>
             )}
-            <button onClick={logout} style={{ color: 'var(--color-text-muted)', paddingTop: '4px' }}>
-              <LogOut size={16} />
-            </button>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              <button onClick={() => setSettingsOpen(true)} style={{ color: 'var(--color-text-muted)', padding: '6px' }}>
+                <SettingsIcon size={16} />
+              </button>
+              <button onClick={logout} style={{ color: 'var(--color-text-muted)', padding: '6px' }}>
+                <LogOut size={16} />
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -74,6 +83,8 @@ function MainLayout() {
           <Route path="/calendar" element={<CalendarPage />} />
         </Routes>
       </main>
+
+      <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }
@@ -81,18 +92,20 @@ function MainLayout() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <ScheduleProvider>
-          <TodoProvider>
-            <CalendarProvider>
-              <Routes>
-                <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-                <Route path="/*" element={<ProtectedRoute><MainLayout /></ProtectedRoute>} />
-              </Routes>
-            </CalendarProvider>
-          </TodoProvider>
-        </ScheduleProvider>
-      </Router>
+      <SettingsProvider>
+        <Router>
+          <ScheduleProvider>
+            <TodoProvider>
+              <CalendarProvider>
+                <Routes>
+                  <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
+                  <Route path="/*" element={<ProtectedRoute><MainLayout /></ProtectedRoute>} />
+                </Routes>
+              </CalendarProvider>
+            </TodoProvider>
+          </ScheduleProvider>
+        </Router>
+      </SettingsProvider>
     </AuthProvider>
   );
 }

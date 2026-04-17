@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Calendar, CheckSquare, Clock, Leaf, LogOut } from 'lucide-react';
+import { Calendar, CheckSquare, Clock, Leaf, LogOut, Settings as SettingsIcon } from 'lucide-react';
 import { useTodo } from '../../contexts/TodoContext';
 import { useAuth } from '../../contexts/AuthContext';
+import SettingsModal from '../common/SettingsModal';
 
 const navItems = [
   { path: '/', icon: Clock, label: 'ตารางเรียน/งาน', emoji: '📅' },
@@ -14,6 +15,7 @@ export default function Sidebar() {
   const location = useLocation();
   const { stats } = useTodo();
   const { currentUser, logout } = useAuth();
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   return (
     <aside className="sidebar-wrapper">
@@ -230,28 +232,65 @@ export default function Sidebar() {
                  {currentUser.displayName || 'User'}
                </span>
             </div>
-            <button 
-              onClick={logout} 
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: 'var(--color-text-muted)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '4px',
-                transition: 'color 200ms ease'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = 'var(--color-danger)'}
-              onMouseLeave={(e) => e.currentTarget.style.color = 'var(--color-text-muted)'}
-              title="ออกจากระบบ"
-            >
-              <LogOut size={16} />
-            </button>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              <button 
+                onClick={() => setSettingsOpen(true)} 
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-text-muted)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '6px',
+                  borderRadius: 'var(--radius-sm)',
+                  transition: 'all 200ms ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--color-text)';
+                  e.currentTarget.style.background = 'var(--color-surface-hover)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--color-text-muted)';
+                  e.currentTarget.style.background = 'transparent';
+                }}
+                title="ตั้งค่าแอป"
+              >
+                <SettingsIcon size={16} />
+              </button>
+              <button 
+                onClick={logout} 
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--color-text-muted)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '6px',
+                  borderRadius: 'var(--radius-sm)',
+                  transition: 'all 200ms ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--color-danger)';
+                  e.currentTarget.style.background = '#ffe5e5';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--color-text-muted)';
+                  e.currentTarget.style.background = 'transparent';
+                }}
+                title="ออกจากระบบ"
+              >
+                <LogOut size={16} />
+              </button>
+            </div>
           </div>
         )}
       </div>
+
+      <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </aside>
   );
 }
