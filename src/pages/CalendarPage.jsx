@@ -68,13 +68,13 @@ export default function CalendarPage() {
         </div>
       </div>
 
-      <div className="page-content" style={{
+      <div className="page-content calendar-layout" style={{
         display: 'flex',
         gap: 'var(--space-lg)',
         alignItems: 'flex-start',
       }}>
         {/* Calendar Grid */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ flex: 1, minWidth: 0, width: '100%' }}>
           <CalendarGrid />
         </div>
 

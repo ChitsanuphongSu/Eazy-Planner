@@ -16,18 +16,9 @@ export default function Sidebar() {
   const { currentUser, logout } = useAuth();
 
   return (
-    <aside style={{
-      width: 'var(--sidebar-width)',
-      height: '100vh',
-      background: 'var(--color-surface)',
-      borderRight: '1px solid var(--color-border-light)',
-      display: 'flex',
-      flexDirection: 'column',
-      flexShrink: 0,
-      zIndex: 100,
-    }}>
+    <aside className="sidebar-wrapper">
       {/* Logo */}
-      <div style={{
+      <div className="sidebar-logo-area" style={{
         padding: '24px 24px 20px',
         borderBottom: '1px solid var(--color-border-light)',
       }}>
@@ -70,7 +61,7 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav style={{
+      <nav className="sidebar-nav-list" style={{
         flex: 1,
         padding: '16px 12px',
         display: 'flex',
@@ -84,6 +75,7 @@ export default function Sidebar() {
             <NavLink
               key={item.path}
               to={item.path}
+              className="sidebar-nav-item"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -112,7 +104,7 @@ export default function Sidebar() {
               }}
             >
               {isActive && (
-                <div style={{
+                <div className="sidebar-nav-indicator" style={{
                   position: 'absolute',
                   left: 0,
                   top: '50%',
@@ -121,6 +113,7 @@ export default function Sidebar() {
                   height: '20px',
                   borderRadius: '0 4px 4px 0',
                   background: 'var(--color-primary)',
+                  zIndex: 2,
                 }} />
               )}
               <Icon size={18} />
@@ -131,7 +124,7 @@ export default function Sidebar() {
       </nav>
 
       {/* User Info Details & Stats Footer */}
-      <div style={{
+      <div className="sidebar-bottom-area" style={{
         padding: '16px 20px 20px',
         borderTop: '1px solid var(--color-border-light)',
         display: 'flex',

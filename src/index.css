@@ -476,12 +476,35 @@ select.input {
   animation: slideInRight var(--transition-slow) forwards;
 }
 
+/* ── Responsive Utilities ── */
+.hide-on-mobile { display: flex; }
+.hide-text-on-mobile { display: inline-block; }
+.show-on-mobile { display: none; }
+
 /* ── Page Layout ── */
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: row;
+}
+
+.sidebar-wrapper {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
 .page {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -596,3 +619,120 @@ select.input {
 [data-tooltip]:hover::after {
   opacity: 1;
 }
+
+/* ====================================
+   📱 Responsive Media Queries
+   ==================================== */
+
+@media (max-width: 768px) {
+  /* Utilities */
+  .hide-on-mobile { display: none !important; }
+  .hide-text-on-mobile { display: none !important; }
+  .show-on-mobile { display: flex !important; }
+
+  /* Page Layout */
+  .app-container {
+    flex-direction: column;
+  }
+  
+  .calendar-layout {
+    flex-direction: column !important;
+  }
+  .calendar-sidebar {
+    width: 100% !important;
+  }
+  
+  .sidebar-wrapper {
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-top: 1px solid var(--color-border-light);
+    order: 2; /* Put at bottom of column */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .sidebar-logo-area, .sidebar-bottom-area {
+    display: none !important;
+  }
+  
+  .sidebar-nav-list {
+    flex-direction: row !important;
+    justify-content: space-around;
+    padding: 8px 4px !important;
+  }
+  
+  .sidebar-nav-item {
+    flex-direction: column !important;
+    gap: 4px !important;
+    padding: 6px !important;
+    font-size: 10px !important;
+    flex: 1;
+    text-align: center;
+    border-radius: var(--radius-md) !important;
+  }
+  
+  .sidebar-nav-indicator {
+    top: 0 !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 20px !important;
+    height: 3px !important;
+    border-radius: 0 0 4px 4px !important;
+  }
+
+  .page-header {
+    padding: var(--space-md) var(--space-md);
+  }
+  
+  .page-header h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .page-content {
+    padding: 0 var(--space-md) var(--space-md);
+  }
+
+  /* FAB - adjust position to account for bottom nav (about 65px) */
+  .fab {
+    bottom: 85px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* Buttons */
+  .btn {
+    padding: 8px 16px;
+    font-size: var(--font-size-xs);
+  }
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* 🔄 Landscape Mode Optimization (Mobile) */
+@media (max-height: 500px) and (orientation: landscape) {
+  .page-header {
+    display: none !important;
+  }
+  
+  .sidebar-wrapper {
+    display: none !important;
+  }
+
+  .app-container .show-on-mobile { /* Hide mobile top header */
+    display: none !important;
+  }
+
+  /* Expand schedule layout */
+  .page-content {
+    padding: 0;
+  }
+
+  .fab {
+    bottom: 20px;
+    right: 20px;
+  }
+}
+

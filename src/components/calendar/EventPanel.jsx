@@ -14,7 +14,7 @@ export default function EventPanel({ onAddEvent, onEditEvent }) {
   const isToday = selectedDate === new Date().toISOString().split('T')[0];
 
   return (
-    <div style={{
+    <div className="calendar-sidebar" style={{
       width: '320px',
       background: 'var(--color-surface)',
       borderRadius: 'var(--radius-lg)',

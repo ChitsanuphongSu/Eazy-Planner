@@ -53,7 +53,7 @@ export default function TodoPage() {
             setEditTask(null);
             setModalOpen(true);
           }}
-          className="btn btn-primary btn-sm"
+          className="btn btn-primary btn-sm hide-on-mobile"
         >
           <Plus size={16} />
           เพิ่มงาน
@@ -67,10 +67,11 @@ export default function TodoPage() {
           gap: '10px',
           marginBottom: '16px',
           alignItems: 'center',
+          flexWrap: 'wrap',
         }}>
           {/* Search */}
           <div style={{
-            flex: 1,
+            flex: '1 1 200px',
             display: 'flex',
             alignItems: 'center',
             gap: '8px',
@@ -188,8 +189,7 @@ export default function TodoPage() {
           setEditTask(null);
           setModalOpen(true);
         }}
-        className="fab"
-        style={{ display: 'none' }}
+        className="fab show-on-mobile"
       >
         <Plus size={24} />
       </button>

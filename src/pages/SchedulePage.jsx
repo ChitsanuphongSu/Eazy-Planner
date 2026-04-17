@@ -41,7 +41,7 @@ export default function SchedulePage() {
             style={{ gap: '6px' }}
           >
             <Settings size={16} />
-            ตั้งค่า
+            <span className="hide-text-on-mobile">ตั้งค่า</span>
           </button>
           <button
             onClick={() => {
@@ -49,7 +49,7 @@ export default function SchedulePage() {
               setDefaultSlot({ day: 0, hour: 9 });
               setModalOpen(true);
             }}
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm hide-on-mobile"
           >
             <Plus size={16} />
             เพิ่มรายการ
@@ -111,6 +111,18 @@ export default function SchedulePage() {
       <div className="page-content" style={{ display: 'flex', flexDirection: 'column' }}>
         <ScheduleGrid onClickSlot={handleClickSlot} onClickItem={handleClickItem} />
       </div>
+
+      {/* FAB for mobile */}
+      <button
+        onClick={() => {
+          setEditItem(null);
+          setDefaultSlot({ day: 0, hour: 9 });
+          setModalOpen(true);
+        }}
+        className="fab show-on-mobile"
+      >
+        <Plus size={24} />
+      </button>
 
       <ScheduleModal
         isOpen={modalOpen}

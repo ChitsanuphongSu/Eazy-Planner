@@ -78,12 +78,16 @@ export default function ScheduleGrid({ onClickSlot, onClickItem }) {
       borderRadius: 'var(--radius-lg)',
       border: '1px solid var(--color-border-light)',
     }}>
-      {/* ── Time Label Column ── */}
+      {/* Time Column (Sticky) */}
       <div style={{
         flexShrink: 0,
         width: '64px',
         borderRight: '1px solid var(--color-border-light)',
         background: 'var(--color-bg)',
+        position: 'sticky',
+        left: 0,
+        zIndex: 10,
+        boxShadow: '2px 0 8px rgba(0,0,0,0.03)',
       }}>
         {/* Day-header spacer */}
         <div style={{ height: '44px', borderBottom: '1px solid var(--color-border-light)' }} />

@@ -9,6 +9,7 @@ import SchedulePage from './pages/SchedulePage';
 import TodoPage from './pages/TodoPage';
 import CalendarPage from './pages/CalendarPage';
 import LoginPage from './pages/LoginPage';
+import { Leaf, LogOut } from 'lucide-react';
 
 // Protect routes that require login
 function ProtectedRoute({ children }) {
@@ -25,6 +26,58 @@ function PublicRoute({ children }) {
   return children;
 }
 
+function MainLayout() {
+  const { currentUser, logout } = useAuth();
+  return (
+    <div className="app-container">
+      {/* Mobile Top Header (Hidden on Desktop) */}
+      <div className="show-on-mobile" style={{
+        display: 'none', // Overridden to flex by .show-on-mobile
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '12px 20px',
+        background: 'var(--color-surface)',
+        borderBottom: '1px solid var(--color-border-light)',
+        zIndex: 50,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: '28px', height: '28px', borderRadius: 'var(--radius-sm)',
+            background: 'linear-gradient(135deg, var(--color-primary), var(--color-primary-light))',
+            display: 'flex', alignItems: 'center', justifyContent: 'center'
+          }}>
+            <Leaf size={14} color="white" />
+          </div>
+          <span style={{ fontWeight: 700, color: 'var(--color-primary-dark)', fontSize: '1rem' }}>Planner</span>
+        </div>
+        {currentUser && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {currentUser.photoURL ? (
+              <img src={currentUser.photoURL} alt="Profile" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+            ) : (
+              <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--color-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>
+                {currentUser.displayName ? currentUser.displayName.charAt(0) : '?'}
+              </div>
+            )}
+            <button onClick={logout} style={{ color: 'var(--color-text-muted)', paddingTop: '4px' }}>
+              <LogOut size={16} />
+            </button>
+          </div>
+        )}
+      </div>
+
+      <Sidebar />
+      <main style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <Routes>
+          <Route path="/" element={<SchedulePage />} />
+          <Route path="/todo" element={<TodoPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -34,20 +87,7 @@ function App() {
             <CalendarProvider>
               <Routes>
                 <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
-                <Route path="/*" element={
-                  <ProtectedRoute>
-                    <div style={{ display: 'flex', width: '100vw', height: '100vh' }}>
-                      <Sidebar />
-                      <main style={{ flex: 1, overflow: 'hidden' }}>
-                        <Routes>
-                          <Route path="/" element={<SchedulePage />} />
-                          <Route path="/todo" element={<TodoPage />} />
-                          <Route path="/calendar" element={<CalendarPage />} />
-                        </Routes>
-                      </main>
-                    </div>
-                  </ProtectedRoute>
-                } />
+                <Route path="/*" element={<ProtectedRoute><MainLayout /></ProtectedRoute>} />
               </Routes>
             </CalendarProvider>
           </TodoProvider>
