@@ -49,7 +49,7 @@ export default function Sidebar() {
               lineHeight: 1.2,
               letterSpacing: '-0.03em',
             }}>
-              Planner
+              FlowSpace
             </h2>
             <span style={{
               fontSize: 'var(--font-size-xs)',

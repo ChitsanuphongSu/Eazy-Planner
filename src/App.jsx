@@ -52,7 +52,7 @@ function MainLayout() {
           }}>
             <Leaf size={14} color="white" />
           </div>
-          <span style={{ fontWeight: 700, color: 'var(--color-primary-dark)', fontSize: '1rem' }}>Planner</span>
+          <span style={{ fontWeight: 700, color: 'var(--color-primary-dark)', fontSize: '1rem' }}>FlowSpace</span>
         </div>
         {currentUser && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
