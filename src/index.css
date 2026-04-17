@@ -99,13 +99,22 @@
 }
 
 /* ====================================
-   🎨 Theme: Dark Mode
+   🎨 Brand Palettes (Primary & Accents)
    ==================================== */
 
+/* 🌿 Default: Matcha Green */
+html {
+  --color-primary: #6B9080;
+  --color-primary-light: #A4C3B2;
+  --color-primary-lighter: #CCE3DE;
+  --color-primary-dark: #4A7766;
+  --color-primary-darker: #3A5F52;
+  --color-accent: #CCE3DE;
+  --color-accent-hover: #B8D9D0;
+  --color-mint: #E8F5F0;
+}
 
-/* ====================================
-   🎨 Colorful Palettes (Curated)
-   ==================================== */
+/* 🌊 Ocean Blue */
 html[data-color="blue"] {
   --color-primary: #6B90D9;
   --color-primary-light: #A4BCE3;
@@ -117,15 +126,7 @@ html[data-color="blue"] {
   --color-mint: #E8F0F5;
 }
 
-html[data-color="blue"]:not([data-theme="dark"]) {
-  --color-bg: #F6F8FC;
-  --color-bg-secondary: #EDF1F5;
-  --color-surface-hover: #F0F4F8;
-  --color-border: #D0DBE8;
-  --color-border-light: #E4E9F0;
-  --color-border-focus: #6B90D9;
-}
-
+/* 🌸 Sakura Pink */
 html[data-color="pink"] {
   --color-primary: #D96B90;
   --color-primary-light: #E3A4B8;
@@ -137,15 +138,7 @@ html[data-color="pink"] {
   --color-mint: #F5E8EC;
 }
 
-html[data-color="pink"]:not([data-theme="dark"]) {
-  --color-bg: #FCF6F8;
-  --color-bg-secondary: #F5EDF0;
-  --color-surface-hover: #F8F0F4;
-  --color-border: #E8D0DB;
-  --color-border-light: #F0E4E9;
-  --color-border-focus: #D96B90;
-}
-
+/* 🍇 Lavender Purple */
 html[data-color="purple"] {
   --color-primary: #A36BD9;
   --color-primary-light: #C4A4E3;
@@ -157,15 +150,7 @@ html[data-color="purple"] {
   --color-mint: #EFE8F5;
 }
 
-html[data-color="purple"]:not([data-theme="dark"]) {
-  --color-bg: #FAF6FC;
-  --color-bg-secondary: #F2EDF5;
-  --color-surface-hover: #F6F0F8;
-  --color-border: #E0D0E8;
-  --color-border-light: #EBE4F0;
-  --color-border-focus: #A36BD9;
-}
-
+/* 🍑 Peach Orange */
 html[data-color="orange"] {
   --color-primary: #D9906B;
   --color-primary-light: #E3BCA4;
@@ -177,31 +162,44 @@ html[data-color="orange"] {
   --color-mint: #F5EAE8;
 }
 
-html[data-color="orange"]:not([data-theme="dark"]) {
-  --color-bg: #FCF8F6;
-  --color-bg-secondary: #F5F0ED;
-  --color-surface-hover: #F8F4F0;
-  --color-border: #E8DBD0;
-  --color-border-light: #F0E9E4;
-  --color-border-focus: #D9906B;
+/* ====================================
+   🌙 Theme: Neutrals (Surface & Background)
+   ==================================== */
+
+/* ☀️ Light Mode Neutrals */
+html, html[data-theme="light"] {
+  --color-bg: #F6FFF8;
+  --color-bg-secondary: #EDF5F0;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F0F8F4;
+  --color-text: #2D3B36;
+  --color-text-secondary: #4A5D55;
+  --color-text-muted: #8A9B94;
+  --color-border: #D4E8DF;
+  --color-border-light: #E8F2EC;
+  --color-border-focus: var(--color-primary);
+  color-scheme: light;
 }
 
-/* ====================================
-   🌙 Theme: Dark Mode (Overrides Backgrounds)
-   ==================================== */
+/* Light Mode Tinted Backdrops */
+html[data-theme="light"][data-color="blue"] { --color-bg: #F6F8FC; --color-bg-secondary: #EDF1F5; --color-surface-hover: #F0F4F8; --color-border: #D0DBE8; --color-border-light: #E4E9F0; }
+html[data-theme="light"][data-color="pink"] { --color-bg: #FCF6F8; --color-bg-secondary: #F5EDF0; --color-surface-hover: #F8F0F4; --color-border: #E8D0DB; --color-border-light: #F0E4E9; }
+html[data-theme="light"][data-color="purple"] { --color-bg: #FAF6FC; --color-bg-secondary: #F2EDF5; --color-surface-hover: #F6F0F8; --color-border: #E0D0E8; --color-border-light: #EBE4F0; }
+html[data-theme="light"][data-color="orange"] { --color-bg: #FCF8F6; --color-bg-secondary: #F5F0ED; --color-surface-hover: #F8F4F0; --color-border: #E8DBD0; --color-border-light: #F0E9E4; }
+
+/* 🌙 Dark Mode Neutrals (Ultimate Priority) */
 html[data-theme="dark"] {
   --color-bg: #121413;
   --color-bg-secondary: #1A1D1C;
   --color-surface: #1E2220;
   --color-surface-hover: #262B28;
-  
   --color-text: #EDF1EF;
   --color-text-secondary: #A0B3AA;
   --color-text-muted: #6B7A73;
   --color-text-inverse: #FFFFFF;
-  
   --color-border: #2D3632;
   --color-border-light: #252D2A;
+  --color-border-focus: var(--color-primary);
   
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
@@ -210,6 +208,13 @@ html[data-theme="dark"] {
   
   color-scheme: dark;
 }
+
+/* Dark Mode Tinted Backdrops (Subtle Theme-Aware Darkness) */
+html[data-theme="dark"][data-color="blue"]   { --color-bg: #0F1216; --color-surface: #171B20; --color-surface-hover: #1E232A; }
+html[data-theme="dark"][data-color="pink"]   { --color-bg: #160F11; --color-surface: #201719; --color-surface-hover: #2A1E21; }
+html[data-theme="dark"][data-color="purple"] { --color-bg: #130F16; --color-surface: #1C1720; --color-surface-hover: #231E2A; }
+html[data-theme="dark"][data-color="orange"] { --color-bg: #16120F; --color-surface: #1F1916; --color-surface-hover: #281F1A; }
+
 
 /* ── Global Reset ── */
 *,
