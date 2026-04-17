@@ -1,16 +1,65 @@
-# React + Vite
+# 🌿 FlowSpace (formerly Eazy-Planner)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![FlowSpace Logo](public/favicon.svg)
 
-Currently, two official plugins are available:
+**FlowSpace** คือแอปพลิเคชันเว็บอัจฉริยะแบบครบวงจร (All-in-one minimal planner) ที่ออกแบบมาเพื่อช่วยคุณจัดการตารางชีวิต ตารางเรียน/งาน, สิ่งที่ต้องทำ (To-Do List), และปฏิทินรวมไว้ด้วยกัน โดดเด่นด้วยดีไซน์สไตล์มินิมอล (Minimalist Design) ถนอมสายตา และมีระบบ PWA ที่ช่วยให้คุณสามารถติดตั้งลงเครื่องได้ฟรี 100% ครอบคลุมทุกระบบปฏิบัติการ!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🔗 **[เข้าใช้งานแอปพลิเคชัน FlowSpace ได้ที่นี่](https://eazy-planner.vercel.app)**
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ ฟีเจอร์หลัก (Key Features)
 
-## Expanding the ESLint configuration
+- 📅 **Schedule Manager (ตารางเรียน/งาน):** สร้างและจัดตารางเวลาในแต่ละวันได้อย่างละเอียด รองรับการลาก-วาง สลับวันเวลา พร้อมคำนวณระยะเวลาครอบคลุมตั้งแต่วันจันทร์-อาทิตย์
+- ✅ **Smart To-Do List:** จดบันทึกสิ่งที่ต้องทำ แบ่งหมวดหมู่ เลือกระดับความสำคัญ (เร่งด่วน/สูง/ปานกลาง/ต่ำ) พร้อมช่องค้นหาและตัวกรองที่ใช้งานง่ายสุดๆ
+- 📆 **Calendar Tracker:** ปฏิทินแสดงงานและกิจกรรมประจำเดือนแบบครบจบในหน้าเดียว เห็นภาพรวมทั้งเดือนง่ายๆ
+- 🎨 **Custom Themes & Colors:** ปรับเปลี่ยนสีสันแอปให้เข้ากับสไตล์คุณ มีให้เลือกทั้ง Dark Mode/Light Mode และแค็ตตาล็อกสีหลัก 5 สไตล์ (Matcha, Ocean, Sakura, Lavender, Peach)
+- ☁️ **Cloud Real-time Sync:** ข้อมูลทุกอย่างที่คุณสร้างจะถูกซิงค์ผ่านปุ่มบัญชี Google (Firebase) เปิดอุปกรณ์ไหนในโลกข้อมูลก็เชื่อมกันทันที
+- 📱 **PWA Native Installs:** โหลดแอปลงประดับจอได้ทันทีโดยไม่ต้องผ่านช่องทาง App Store ใดๆ กินพื้นที่น้อยและรวดเร็ว
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 📲 วิธีติดตั้งแอปลงในเครื่อง (PWA Installation Guide)
+
+แอปพลิเคชัน FlowSpace ถูกสร้างด้วยระบบ **Progressive Web App (PWA)** ทำให้คุณสามารถติดตั้งแอปนี้เพื่อใช้งานในระดับเครื่อง (Native-like) ได้โดยไม่ต้องไปดาวน์โหลดจากสโตร์ให้ยุ่งยาก และ **ฟรี 100%** สำหรับทุกระบบปฏิบัติการครับ
+
+โปรดเข้าไปที่เว็บไซต์: **[eazy-planner.vercel.app](https://eazy-planner.vercel.app)** ผ่านเบราว์เซอร์ของอุปกรณ์คุณ แล้วทำตามขั้นตอนต่อไปนี้
+
+### 🍎 1. สำหรับ iOS (iPhone / iPad)
+*หมายเหตุ: ต้องใช้เบราว์เซอร์ Safari เท่านั้นสำหรับ iOS*
+1. เปิดเว็บไซต์ผ่าน **Safari**
+2. แตะปุ่ม `แชร์ (Share)` ที่แถบเมนูด้านล่าง (ไอคอนรูปสี่เหลี่ยมมีลูกศรชี้ขึ้น)
+3. เลื่อนลงมาหารายการคำสั่ง แล้วแตะ **"เพิ่มไปยังหน้าจอโฮม (Add to Home Screen)"**
+4. แตะปุ่ม `เพิ่ม (Add)` มุมขวาบน
+5. ไอคอนแอป **FlowSpace** จะไปปรากฏบนหน้าจอโทรศัพท์พร้อมใช้งานแบบเต็มจอ!
+
+### 🤖 2. สำหรับ Android (มือถือ/แท็บเล็ต)
+1. เปิดเว็บไซต์ผ่าน **Google Chrome** (หรือเบราว์เซอร์ที่คุณใช้งานประจำ)
+2. ระบบจะมีแถบข้อความเด้งขึ้นมาบริเวณพื้นที่ด้านล่างจอว่า **"เพิ่ม FlowSpace ลงในหน้าจอหลัก"** (Add FlowSpace to Home screen) ให้กดเพื่อยินยอม
+3. *[วิธีทางเลือก]* หากไม่เห็นแถบแจ้งเตือน ให้กดปุ่ม `เมนู 3 จุด` มุมขวาบน แล้วเลือก **"ติดตั้งแอป (Install App)"**
+4. ระบบจะทำการเพิ่มแอปลงหน้าจอสมาร์ทโฟนของคุณโดยอัตโนมัติ
+
+### 💻 3. สำหรับ Computer PC (Windows / Linux)
+1. เปิดเว็บไซต์ผ่านเบราว์เซอร์ **Google Chrome** หรือ **Microsoft Edge**
+2. มองหาไอคอนทาง **มุมขวาบนของแถบใส่ที่อยู่เว็บ (Address Bar)** ซึ่งจะปรากฏรูปหน้าจอคอมพิวเตอร์และมีเครื่องหมายบวก (+) 
+3. เอาเมาส์ไปชี้จะมีข้อความเด้งว่า **"App available. Install FlowSpace"** หรือ "ติดตั้งแอปพลิเคชัน" ให้คลิกที่นั่น
+4. กดปุ่ม `Install (ติดตั้ง)`
+5. แอปจะถูกจำลองเป็นหน้าต่างโปรแกรมในระบบให้ทันที และคุณสามารถปักหมุดไอคอนลงบน Taskbar หรือ Start Menu ของ Window ได้เหมือนโปรแกรมคอมพิวเตอร์เลย!
+
+### 🍏 4. สำหรับ MacOS (Macbook / iMac)
+1. เปิดเว็บไซต์ผ่าน **Google Chrome**
+2. ที่มุมขวาบนของแถบ Address Bar (ช่องพิมพ์เว็บไซต์) ให้คลิกที่ไอคอนสำหรับติดตั้งแอป PWA (เหมือนขั้นตอนของ Windows)
+3. กดปุ่ม `Install` 
+4. คุณสามารถค้นหาและเปิดใช้งาน FlowSpace ได้ทันทีผ่านเครื่องมือ **Launchpad** บน Mac ของคุณ
+
+---
+
+## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+- **Frontend Code:** React.js + Vite (Fast Bundler)
+- **Styling:** CSS + Lucide React (Icons)
+- **Database / Auth:** Firebase Firestore & Firebase Google Auth
+- **PWA Capabilities:** vite-plugin-pwa
+- **Deployment:** Vercel
+
+---
+*Developed with Minimalist Philosophy.* 🌿
