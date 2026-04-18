@@ -1,7 +1,7 @@
 import { db } from '../firebase';
 import { 
   collection, doc, setDoc, updateDoc, deleteDoc, 
-  onSnapshot, getDoc, query, where, orderBy 
+  onSnapshot
 } from 'firebase/firestore';
 
 // Todo Operations

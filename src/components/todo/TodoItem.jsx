@@ -356,5 +356,6 @@ export default function TodoItem({
         </div>
       </div>
     </div>
+  </div>
   );
 }

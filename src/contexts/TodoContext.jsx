@@ -98,7 +98,7 @@ export function TodoProvider({ children }) {
     await Promise.all(ids.map(id => deleteDocument(currentUser.uid, 'tasks', id)));
   };
 
-  const reorderTasks = async (newTasks) => {
+  const reorderTasks = async () => {
     if (!currentUser) return;
     // In a real production app, reordering might require batched writes.
     // For simplicity, we just rely on sorting locally or updating index fields.
