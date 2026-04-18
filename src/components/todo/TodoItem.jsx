@@ -303,7 +303,7 @@ export default function TodoItem({
               >
                 <Edit2 
                   style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px' }} 
-                  strokeWidth={3} 
+                  strokeWidth={2} 
                 />
               </button>
               <button
@@ -328,7 +328,7 @@ export default function TodoItem({
               >
                 <Trash2 
                   style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px' }} 
-                  strokeWidth={3} 
+                  strokeWidth={2} 
                 />
               </button>
             </div>
