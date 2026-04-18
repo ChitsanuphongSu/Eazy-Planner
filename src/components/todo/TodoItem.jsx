@@ -68,10 +68,21 @@ export default function TodoItem({
           }
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'auto 1fr auto', 
+          gap: '12px',
+          alignItems: 'start'
+        }}>
           
           {/* --- COL 1: Selection/Status (Left) --- */}
-          <div style={{ flexShrink: 0, marginTop: '2px' }}>
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '8px',
+            marginTop: '2px',
+            minWidth: isSelectionMode ? '22px' : '46px' 
+          }}>
             {isSelectionMode ? (
                <div style={{
                  width: '22px',
@@ -87,8 +98,8 @@ export default function TodoItem({
                  {isSelected && <Check size={12} color="white" strokeWidth={4} />}
                </div>
             ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ color: 'var(--color-text-muted)', opacity: 0.3, cursor: 'grab' }}>
+              <>
+                <div style={{ color: 'var(--color-text-muted)', opacity: 0.3, cursor: 'grab', flexShrink: 0 }}>
                   <GripVertical size={16} />
                 </div>
                 <button
@@ -104,18 +115,19 @@ export default function TodoItem({
                     justifyContent: 'center',
                     cursor: 'pointer',
                     transition: 'all 200ms ease',
+                    flexShrink: 0,
                   }}
                 >
                   {task.completed && (
                     <Check size={14} color="white" strokeWidth={3} style={{ animation: 'checkmark 300ms ease' }} />
                   )}
                 </button>
-              </div>
+              </>
             )}
           </div>
 
-          {/* --- COL 2: Content (Middle) --- */}
-          <div style={{ flex: 1, minWidth: 0 }}>
+          {/* --- COL 2: Content (Middle - Stretches) --- */}
+          <div style={{ minWidth: 0 }}>
             {/* Title & Badge Row */}
             <div style={{ marginBottom: '4px' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px', marginBottom: '2px' }}>
@@ -260,31 +272,33 @@ export default function TodoItem({
             )}
           </div>
 
-          {/* --- COL 3: Actions (Right) --- */}
+          {/* --- COL 3: Actions (Right - Fixed) --- */}
           {!isSelectionMode && (
             <div style={{ 
               display: 'flex', 
-              flexDirection: 'row', 
-              gap: '4px', 
-              flexShrink: 0,
+              gap: '6px', 
               alignItems: 'center',
-              width: '72px', // Fixed width for two 34px buttons + gap
-              justifyContent: 'flex-end'
+              width: '74px', 
+              minWidth: '74px',
+              justifyContent: 'flex-end',
+              alignSelf: 'start',
+              marginTop: '2px'
             }}>
               <button
                 onClick={(e) => { e.stopPropagation(); onEdit(task); }}
                 className="btn btn-icon btn-ghost"
                 style={{ 
                   width: '34px', 
+                  minWidth: '34px',
                   height: '34px', 
                   background: 'var(--color-bg-secondary)',
-                  flexShrink: 0,
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  borderRadius: '10px'
                 }}
               >
-                <Edit2 size={15} color="var(--color-text-secondary)" />
+                <Edit2 size={16} color="var(--color-text-secondary)" />
               </button>
               <button
                 onClick={(e) => { 
@@ -293,17 +307,18 @@ export default function TodoItem({
                 }}
                 className="btn btn-icon btn-ghost"
                 style={{ 
-                  width: '34px', 
+                  width: '34px',
+                  minWidth: '34px',
                   height: '34px', 
                   background: 'var(--color-bg-secondary)', 
                   color: 'var(--color-danger)',
-                  flexShrink: 0,
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  borderRadius: '10px'
                 }}
               >
-                <Trash2 size={15} />
+                <Trash2 size={16} />
               </button>
             </div>
           )}
