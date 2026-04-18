@@ -288,19 +288,23 @@ export default function TodoItem({
                 onClick={(e) => { e.stopPropagation(); onEdit(task); }}
                 className="btn btn-icon btn-ghost"
                 style={{ 
-                  width: '36px', 
-                  minWidth: '36px',
-                  height: '36px', 
+                  width: '38px', 
+                  minWidth: '38px',
+                  height: '38px', 
                   background: 'var(--color-bg-secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  padding: 0,
                   borderRadius: '10px',
-                  color: 'var(--color-text)', // Higher contrast
+                  color: '#FFFFFF', // Force White for maximum contrast
                   overflow: 'visible'
                 }}
               >
-                <Edit2 size={18} strokeWidth={2.5} />
+                <Edit2 
+                  style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px' }} 
+                  strokeWidth={3} 
+                />
               </button>
               <button
                 onClick={(e) => { 
@@ -309,19 +313,23 @@ export default function TodoItem({
                 }}
                 className="btn btn-icon btn-ghost"
                 style={{ 
-                  width: '36px',
-                  minWidth: '36px',
-                  height: '36px', 
+                  width: '38px',
+                  minWidth: '38px',
+                  height: '38px', 
                   background: 'var(--color-bg-secondary)', 
-                  color: 'var(--color-danger)', // Sharp red
+                  color: '#FF5C5C', // Force Vivid Red
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  padding: 0,
                   borderRadius: '10px',
                   overflow: 'visible'
                 }}
               >
-                <Trash2 size={18} strokeWidth={2.5} />
+                <Trash2 
+                  style={{ width: '20px', height: '20px', minWidth: '20px', minHeight: '20px' }} 
+                  strokeWidth={3} 
+                />
               </button>
             </div>
           )}
