@@ -4,6 +4,7 @@ import { Calendar, CheckSquare, Clock, Leaf, LogOut, Settings as SettingsIcon } 
 import { useTodo } from '../../contexts/TodoContext';
 import { useAuth } from '../../contexts/AuthContext';
 import SettingsModal from '../common/SettingsModal';
+import StatsWidget from '../common/StatsWidget';
 
 const navItems = [
   { path: '/', icon: Clock, label: 'ตารางเรียน/งาน', emoji: '📅' },
@@ -135,80 +136,18 @@ export default function Sidebar() {
       }}>
 
         <div style={{
-          background: 'var(--color-bg)',
-          borderRadius: 'var(--radius-md)',
-          padding: '14px 16px',
+          fontSize: 'var(--font-size-xs)',
+          color: 'var(--color-text-muted)',
+          marginBottom: '8px',
+          paddingLeft: '16px',
+          fontWeight: 500,
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
         }}>
-          <div style={{
-            fontSize: 'var(--font-size-xs)',
-            color: 'var(--color-text-muted)',
-            marginBottom: '8px',
-            fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-          }}>
-            สรุปงาน
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', gap: '8px' }}>
-            <div style={{ textAlign: 'center', flex: 1 }}>
-              <div style={{
-                fontSize: 'var(--font-size-xl)',
-                fontWeight: 700,
-                color: 'var(--color-primary)',
-                lineHeight: 1,
-              }}>
-                {stats.active}
-              </div>
-              <div style={{
-                fontSize: '10px',
-                color: 'var(--color-text-muted)',
-                marginTop: '2px',
-              }}>ค้างอยู่</div>
-            </div>
-            <div style={{
-              width: '1px',
-              background: 'var(--color-border)',
-            }} />
-            <div style={{ textAlign: 'center', flex: 1 }}>
-              <div style={{
-                fontSize: 'var(--font-size-xl)',
-                fontWeight: 700,
-                color: 'var(--color-success)',
-                lineHeight: 1,
-              }}>
-                {stats.completed}
-              </div>
-              <div style={{
-                fontSize: '10px',
-                color: 'var(--color-text-muted)',
-                marginTop: '2px',
-              }}>เสร็จแล้ว</div>
-            </div>
-            {stats.urgent > 0 && (
-              <>
-                <div style={{
-                  width: '1px',
-                  background: 'var(--color-border)',
-                }} />
-                <div style={{ textAlign: 'center', flex: 1 }}>
-                  <div style={{
-                    fontSize: 'var(--font-size-xl)',
-                    fontWeight: 700,
-                    color: 'var(--color-danger)',
-                    lineHeight: 1,
-                  }}>
-                    {stats.urgent}
-                  </div>
-                  <div style={{
-                    fontSize: '10px',
-                    color: 'var(--color-text-muted)',
-                    marginTop: '2px',
-                  }}>เร่งด่วน</div>
-                </div>
-              </>
-            )}
-          </div>
+          สรุปงาน
         </div>
+        <StatsWidget variant="sidebar" />
+
 
         {currentUser && (
           <div style={{
