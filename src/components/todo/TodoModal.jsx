@@ -16,6 +16,7 @@ export default function TodoModal({ isOpen, onClose, editTask = null }) {
         priority: editTask.priority || 'medium',
         category: editTask.category || 'general',
         dueDate: editTask.dueDate || '',
+        dueTime: editTask.dueTime || '',
         tags: editTask.tags || [],
         subtasks: editTask.subtasks || [],
       };
@@ -26,6 +27,7 @@ export default function TodoModal({ isOpen, onClose, editTask = null }) {
       priority: 'medium',
       category: 'general',
       dueDate: '',
+      dueTime: '',
       tags: [],
       subtasks: [],
     };
@@ -159,15 +161,25 @@ export default function TodoModal({ isOpen, onClose, editTask = null }) {
           </select>
         </div>
 
-        {/* Due Date */}
-        <div className="input-group">
-          <label>กำหนดส่ง</label>
-          <input
-            className="input"
-            type="date"
-            value={form.dueDate}
-            onChange={e => setForm(prev => ({ ...prev, dueDate: e.target.value }))}
-          />
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <div className="input-group" style={{ flex: 1 }}>
+            <label>วันที่กำหนดส่ง</label>
+            <input
+              className="input"
+              type="date"
+              value={form.dueDate}
+              onChange={e => setForm(prev => ({ ...prev, dueDate: e.target.value }))}
+            />
+          </div>
+          <div className="input-group" style={{ flex: 1 }}>
+            <label>เวลาที่กำหนดส่ง</label>
+            <input
+              className="input"
+              type="time"
+              value={form.dueTime}
+              onChange={e => setForm(prev => ({ ...prev, dueTime: e.target.value }))}
+            />
+          </div>
         </div>
 
         {/* Tags */}

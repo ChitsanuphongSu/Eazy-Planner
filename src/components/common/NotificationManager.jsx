@@ -3,10 +3,11 @@ import { useSchedule } from '../../contexts/ScheduleContext';
 import { useCalendar } from '../../contexts/CalendarContext';
 import { useTodo } from '../../contexts/TodoContext';
 import { useAppTheme } from '../../contexts/SettingsContext';
+import { addDays, format, isSameDay } from 'date-fns';
 
 /**
  * NotificationManager handles periodic checks for schedule warnings 
- * and daily digest notifications (at 00:01).
+ * and daily digest notifications.
  */
 export default function NotificationManager() {
   const { items: scheduleItems } = useSchedule();
@@ -14,7 +15,7 @@ export default function NotificationManager() {
   const { todos } = useTodo();
   const { themePrefs } = useAppTheme();
   
-  const lastScheduleAlerts = useRef({}); // Track already sent schedule alerts { itemId: lastAlarmTime }
+  const lastAlerts = useRef({}); // Track already sent alerts { alertId: timestamp }
   
   useEffect(() => {
     if (!themePrefs.notificationsEnabled) return;
@@ -39,7 +40,7 @@ export default function NotificationManager() {
         if (!scheduleItems || !calendarEvents || !todos) return;
 
         const now = new Date();
-        const todayStr = now.toLocaleDateString('en-CA'); // YYYY-MM-DD in local time
+        const todayStr = format(now, 'yyyy-MM-dd');
         const nowHours = now.getHours();
         const nowMinutes = now.getMinutes();
         const todayIndex = now.getDay() === 0 ? 6 : now.getDay() - 1; 
@@ -51,7 +52,7 @@ export default function NotificationManager() {
           let digestBody = "";
 
           const todaysEvents = calendarEvents.filter(e => e.date === todayStr);
-          const todaysTodos = todos.filter(t => t.deadline === todayStr && !t.completed);
+          const todaysTodos = todos.filter(t => t.dueDate === todayStr && !t.completed);
 
           if (todaysEvents.length > 0) {
             digestBody += `วันนี้คุณมี ${todaysEvents.length} กิจกรรม. `;
@@ -69,36 +70,64 @@ export default function NotificationManager() {
         }
 
         // --- 2. Schedule Warnings (10 mins before) ---
-        const activeScheduleItems = scheduleItems.filter(item => 
-          item && item.startTime && Number(item.dayIndex) === todayIndex
-        );
-        
-        activeScheduleItems.forEach(item => {
-          const timeParts = item.startTime.split(':');
-          if (timeParts.length !== 2) return;
+        scheduleItems.forEach(item => {
+          if (!item || item.startHour === undefined || Number(item.dayIndex) !== todayIndex) return;
 
-          const [startH, startM] = timeParts.map(Number);
           const itemStartTime = new Date(now);
-          itemStartTime.setHours(startH, startM, 0, 0);
+          itemStartTime.setHours(item.startHour, item.startMinute || 0, 0, 0);
 
           const diffMinutes = (itemStartTime.getTime() - now.getTime()) / (1000 * 60);
 
-          if (diffMinutes > 0 && diffMinutes <= 10.5 && diffMinutes >= 9.5) {
-            const alertId = `${item.id}_${todayStr}`;
-            if (!lastScheduleAlerts.current[alertId]) {
+          // Alert window: between 9 and 11 minutes before
+          if (diffMinutes > 0 && diffMinutes <= 11) {
+            const alertId = `sched_${item.id}_${todayStr}`;
+            if (!lastAlerts.current[alertId]) {
               sendNotification(`เตรียมตัว! ${item.title}`, {
-                body: `กำลังจะเริ่มในอีก 10 นาที (${item.startTime})`,
+                body: `กำลังจะเริ่มในอีก 10 นาที (${String(item.startHour).padStart(2, '0')}:${String(item.startMinute || 0).padStart(2, '0')})`,
               });
-              lastScheduleAlerts.current[alertId] = now.getTime();
+              lastAlerts.current[alertId] = now.getTime();
             }
           }
         });
+
+        // --- 3. Todo Deadlines (1 Day Before) ---
+        todos.forEach(task => {
+          if (!task.dueDate || task.completed) return;
+
+          // Parse deadline date and time
+          const deadlineDate = new Date(task.dueDate);
+          if (task.dueTime) {
+            const [h, m] = task.dueTime.split(':').map(Number);
+            deadlineDate.setHours(h, m, 0, 0);
+          } else {
+            deadlineDate.setHours(9, 0, 0, 0); // Default to 9 AM if no time
+          }
+
+          // Target alert time: exactly 24 hours before the deadline
+          const alertTime = new Date(deadlineDate.getTime() - (24 * 60 * 60 * 1000));
+          const diffHours = (alertTime.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+          // Alert window: between 0 and 0.5 hours (30 mins) after the 1-day mark is reached
+          // Actually, let's just use a simple date check + hour check to be robust.
+          // If now is equal to or past alertTime, and it's still the same day as alertTime
+          if (now >= alertTime && now.getTime() - alertTime.getTime() < 3600000) { // Within 1 hour of alert time
+             const alertId = `todo_1d_${task.id}`;
+             if (!lastAlerts.current[alertId]) {
+               sendNotification(`งานใกล้กำหนดส่ง!`, {
+                 body: `"${task.title}" จะถึงกำหนดในวันพรุ่งนี้${task.dueTime ? ' เวลา ' + task.dueTime : ''}`,
+               });
+               lastAlerts.current[alertId] = now.getTime();
+             }
+          }
+        });
+
       } catch (err) {
         console.error("Notification lookup error:", err);
       }
     };
 
-    const interval = setInterval(checkTriggers, 60000);
+    // Check triggers more frequently (every 30 seconds)
+    const interval = setInterval(checkTriggers, 30000);
     checkTriggers(); 
 
     return () => clearInterval(interval);

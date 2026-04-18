@@ -19,9 +19,14 @@ export default function TodoItem({
   const dueDateLabel = () => {
     if (!task.dueDate) return null;
     const date = new Date(task.dueDate);
-    if (isToday(date)) return { text: 'วันนี้', color: 'var(--color-warning)' };
-    if (isPast(date) && !task.completed) return { text: 'เลยกำหนด', color: 'var(--color-danger)' };
-    return { text: format(date, 'd MMM', { locale: th }), color: 'var(--color-text-muted)' };
+    let dateStr = format(date, 'd MMM', { locale: th });
+    if (task.dueTime) {
+      dateStr += ` ${task.dueTime}`;
+    }
+
+    if (isToday(date)) return { text: `วันนี้ ${task.dueTime || ''}`, color: 'var(--color-warning)' };
+    if (isPast(date) && !task.completed) return { text: `เลยกำหนด (${dateStr})`, color: 'var(--color-danger)' };
+    return { text: dateStr, color: 'var(--color-text-muted)' };
   };
 
   const due = dueDateLabel();
