@@ -7,6 +7,7 @@ const SettingsContext = createContext();
 const defaultThemeSettings = {
   theme: 'light',
   color: 'green',
+  notificationsEnabled: false,
 };
 
 export function SettingsProvider({ children }) {
@@ -66,8 +67,33 @@ export function SettingsProvider({ children }) {
     }
   };
 
+  const toggleNotifications = async () => {
+    const currentState = themePrefs.notificationsEnabled;
+    let newState = !currentState;
+
+    if (newState) {
+      // Request permission
+      if ("Notification" in window) {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          newState = false;
+          alert("กรุณาอนุญาตการแจ้งเตือนในตั้งค่าบราวเซอร์ของคุณ");
+        }
+      } else {
+        alert("บราวเซอร์ของคุณไม่รองรับการแจ้งเตือน");
+        newState = false;
+      }
+    }
+
+    const updated = { ...themePrefs, notificationsEnabled: newState };
+    setThemePrefs(updated);
+    if (currentUser) {
+      await updateSettings(currentUser.uid, 'settings', 'appTheme', updated);
+    }
+  };
+
   return (
-    <SettingsContext.Provider value={{ themePrefs, changeTheme, changeColor }}>
+    <SettingsContext.Provider value={{ themePrefs, changeTheme, changeColor, toggleNotifications }}>
       {children}
     </SettingsContext.Provider>
   );

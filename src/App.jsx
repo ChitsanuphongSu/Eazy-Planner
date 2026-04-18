@@ -11,6 +11,7 @@ import TodoPage from './pages/TodoPage';
 import CalendarPage from './pages/CalendarPage';
 import LoginPage from './pages/LoginPage';
 import SettingsModal from './components/common/SettingsModal';
+import NotificationManager from './components/common/NotificationManager';
 import { Leaf, LogOut, Settings as SettingsIcon } from 'lucide-react';
 
 // Protect routes that require login
@@ -34,6 +35,7 @@ function MainLayout() {
   
   return (
     <div className="app-container">
+      <NotificationManager />
       {/* Mobile Top Header (Hidden on Desktop) */}
       <div className="show-on-mobile" style={{
         display: 'none', // Overridden to flex by .show-on-mobile
