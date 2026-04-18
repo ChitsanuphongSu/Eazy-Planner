@@ -13,6 +13,7 @@ import LoginPage from './pages/LoginPage';
 import SettingsModal from './components/common/SettingsModal';
 import NotificationManager from './components/common/NotificationManager';
 import StatsWidget from './components/common/StatsWidget';
+import QuickPulse from './components/common/QuickPulse';
 import { Leaf, LogOut, Settings as SettingsIcon } from 'lucide-react';
 
 // Protect routes that require login
@@ -37,6 +38,7 @@ function MainLayout() {
   return (
     <div className="app-container">
       <NotificationManager />
+      <QuickPulse />
       {/* Mobile Top Header (Hidden on Desktop) */}
       <div className="show-on-mobile" style={{
         display: 'none', // Overridden to flex by .show-on-mobile
@@ -78,10 +80,7 @@ function MainLayout() {
         )}
       </div>
 
-      {/* Mobile Stats Card (Shows only on Mobile) */}
-      <div className="show-on-mobile">
-        {currentUser && <StatsWidget variant="mobile" />}
-      </div>
+
 
       <Sidebar />
       <main style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
