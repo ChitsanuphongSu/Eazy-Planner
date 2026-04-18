@@ -69,8 +69,8 @@ export default function TodoItem({
   const handleTouchEnd = () => {
     setIsSwiping(false);
     stopLongPress();
-    if (swipeOffset < -60) {
-      setSwipeOffset(-80); // Snap to open
+    if (swipeOffset < -50) {
+      setSwipeOffset(-90); // Snap to open
     } else {
       setSwipeOffset(0); // Snap to closed
     }
@@ -89,24 +89,30 @@ export default function TodoItem({
     >
       {/* Swipe Delete Action (Behind) */}
       <div 
-        onClick={() => { if(window.confirm('ลบงานนี้?')) deleteTask(task.id); }}
+        onClick={(e) => { 
+          e.stopPropagation();
+          if(window.confirm('ลบงานนี้?')) deleteTask(task.id); 
+        }}
         style={{
           position: 'absolute',
           right: 0,
           top: 0,
           bottom: 0,
-          width: '80px',
+          width: '90px',
           background: 'var(--color-danger)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           color: 'white',
           zIndex: 1,
-          opacity: swipeOffset < -20 ? 1 : 0,
+          opacity: swipeOffset < -15 ? 1 : 0,
           transition: 'opacity 0.2s ease',
         }}
       >
-        <Trash2 size={20} />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+          <Trash2 size={20} />
+          <span style={{ fontSize: '10px', fontWeight: 600 }}>ลบ</span>
+        </div>
       </div>
 
       <div
@@ -226,20 +232,23 @@ export default function TodoItem({
             )}
 
             {/* Edit & Delete */}
-            <div style={{ display: 'flex', gap: '2px' }}>
+            <div style={{ display: 'flex', gap: '2px', flexShrink: 0 }}>
               <button
-                onClick={() => onEdit(task)}
+                onClick={(e) => { e.stopPropagation(); onEdit(task); }}
                 className="btn btn-icon btn-ghost"
-                style={{ width: '28px', height: '28px', opacity: 0.5 }}
+                style={{ width: '32px', height: '32px', opacity: 0.7 }}
               >
-                <Edit2 size={13} />
+                <Edit2 size={14} />
               </button>
               <button
-                onClick={() => deleteTask(task.id)}
+                onClick={(e) => { 
+                  e.stopPropagation(); 
+                  if (window.confirm('ลบงานนี้?')) deleteTask(task.id); 
+                }}
                 className="btn btn-icon btn-ghost"
-                style={{ width: '28px', height: '28px', opacity: 0.5, color: 'var(--color-danger)' }}
+                style={{ width: '32px', height: '32px', opacity: 0.7, color: 'var(--color-danger)' }}
               >
-                <Trash2 size={13} />
+                <Trash2 size={14} />
               </button>
             </div>
           </div>

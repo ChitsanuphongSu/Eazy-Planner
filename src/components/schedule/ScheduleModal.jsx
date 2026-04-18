@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSchedule } from '../../contexts/ScheduleContext';
 import Modal from '../common/Modal';
 import ColorPicker from '../common/ColorPicker';
@@ -7,34 +7,51 @@ import { formatTime } from '../../utils/helpers';
 export default function ScheduleModal({ isOpen, onClose, editItem = null, defaultDay = 0, defaultHour = 9 }) {
   const { addItem, updateItem, deleteItem, categories } = useSchedule();
 
-  const [form, setForm] = useState(() => {
-    if (editItem) {
-      return {
-        title: editItem.title || '',
-        dayIndex: editItem.dayIndex ?? 0,
-        startHour: editItem.startHour ?? 9,
-        startMinute: editItem.startMinute ?? 0,
-        endHour: editItem.endHour ?? 10,
-        endMinute: editItem.endMinute ?? 0,
-        category: editItem.category || 'class',
-        color: editItem.color || '#6B9080',
-        location: editItem.location || '',
-        note: editItem.note || '',
-      };
-    }
-    return {
-      title: '',
-      dayIndex: defaultDay,
-      startHour: defaultHour,
-      startMinute: 0,
-      endHour: defaultHour + 1,
-      endMinute: 0,
-      category: 'class',
-      color: '#6B9080',
-      location: '',
-      note: '',
-    };
+  const [form, setForm] = useState({
+    title: '',
+    dayIndex: defaultDay,
+    startHour: defaultHour,
+    startMinute: 0,
+    endHour: defaultHour + 1,
+    endMinute: 0,
+    category: 'class',
+    color: '#6B9080',
+    location: '',
+    note: '',
   });
+
+  // Sync form when editItem changes or modal opens
+  useEffect(() => {
+    if (isOpen) {
+      if (editItem) {
+        setForm({
+          title: editItem.title || '',
+          dayIndex: editItem.dayIndex ?? 0,
+          startHour: editItem.startHour ?? 9,
+          startMinute: editItem.startMinute ?? 0,
+          endHour: editItem.endHour ?? 10,
+          endMinute: editItem.endMinute ?? 0,
+          category: editItem.category || 'class',
+          color: editItem.color || '#6B9080',
+          location: editItem.location || '',
+          note: editItem.note || '',
+        });
+      } else {
+        setForm({
+          title: '',
+          dayIndex: defaultDay,
+          startHour: defaultHour,
+          startMinute: 0,
+          endHour: defaultHour + 1,
+          endMinute: 0,
+          category: 'class',
+          color: '#6B9080',
+          location: '',
+          note: '',
+        });
+      }
+    }
+  }, [editItem, isOpen, defaultDay, defaultHour]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
