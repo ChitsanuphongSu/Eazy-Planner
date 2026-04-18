@@ -288,17 +288,19 @@ export default function TodoItem({
                 onClick={(e) => { e.stopPropagation(); onEdit(task); }}
                 className="btn btn-icon btn-ghost"
                 style={{ 
-                  width: '34px', 
-                  minWidth: '34px',
-                  height: '34px', 
+                  width: '36px', 
+                  minWidth: '36px',
+                  height: '36px', 
                   background: 'var(--color-bg-secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '10px'
+                  borderRadius: '10px',
+                  color: 'var(--color-text)', // Higher contrast
+                  overflow: 'visible'
                 }}
               >
-                <Edit2 size={16} color="var(--color-text-secondary)" />
+                <Edit2 size={18} strokeWidth={2.5} />
               </button>
               <button
                 onClick={(e) => { 
@@ -307,18 +309,19 @@ export default function TodoItem({
                 }}
                 className="btn btn-icon btn-ghost"
                 style={{ 
-                  width: '34px',
-                  minWidth: '34px',
-                  height: '34px', 
+                  width: '36px',
+                  minWidth: '36px',
+                  height: '36px', 
                   background: 'var(--color-bg-secondary)', 
-                  color: 'var(--color-danger)',
+                  color: 'var(--color-danger)', // Sharp red
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: '10px'
+                  borderRadius: '10px',
+                  overflow: 'visible'
                 }}
               >
-                <Trash2 size={16} />
+                <Trash2 size={18} strokeWidth={2.5} />
               </button>
             </div>
           )}
