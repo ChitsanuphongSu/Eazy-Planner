@@ -102,56 +102,6 @@ export default function SettingsModal({ isOpen, onClose }) {
             })}
           </div>
         </div>
-        {/* Notifications Toggle */}
-        <div style={{
-          padding: '16px',
-          background: 'var(--color-bg)',
-          borderRadius: 'var(--radius-lg)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between'
-        }}>
-          <div>
-            <label style={{
-              display: 'block',
-              fontSize: 'var(--font-size-sm)',
-              fontWeight: 600,
-              color: 'var(--color-text)'
-            }}>
-              การแจ้งเตือน (Notifications)
-            </label>
-            <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)' }}>
-              รับสรุปงานเช้า 00:01 และเตือนก่อนเริ่ม 10 นาที
-            </span>
-          </div>
-          <button
-            onClick={toggleNotifications}
-            style={{
-              padding: '8px 16px',
-              borderRadius: 'var(--radius-full)',
-              border: 'none',
-              cursor: 'pointer',
-              background: themePrefs.notificationsEnabled ? 'var(--color-primary)' : 'var(--color-border)',
-              color: themePrefs.notificationsEnabled ? 'white' : 'var(--color-text-secondary)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontWeight: 600,
-              transition: 'all 200ms ease'
-            }}
-          >
-            {themePrefs.notificationsEnabled ? (
-              <>
-                <Bell size={16} />
-                เปิด
-              </>
-            ) : (
-              <>
-                <BellOff size={16} />
-                ปิด
-              </>
-            )}
-          </button>
         </div>
       </div>
     </Modal>

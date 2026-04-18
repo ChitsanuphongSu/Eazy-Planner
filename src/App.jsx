@@ -11,7 +11,6 @@ import TodoPage from './pages/TodoPage';
 import CalendarPage from './pages/CalendarPage';
 import LoginPage from './pages/LoginPage';
 import SettingsModal from './components/common/SettingsModal';
-import NotificationManager from './components/common/NotificationManager';
 import StatsWidget from './components/common/StatsWidget';
 import QuickPulse from './components/common/QuickPulse';
 import { Leaf, LogOut, Settings as SettingsIcon } from 'lucide-react';
@@ -37,7 +36,6 @@ function MainLayout() {
   
   return (
     <div className="app-container">
-      <NotificationManager />
       <QuickPulse />
       {/* Mobile Top Header (Hidden on Desktop) */}
       <div className="show-on-mobile" style={{
