@@ -13,7 +13,7 @@ export default defineConfig({
         short_name: 'FlowSpace',
         description: 'จัดการตารางชีวิตให้เป็นระบบ (Schedule, Todo, Calendar)',
         theme_color: '#6B9080',
-        background_color: '#FFFFFF',
+        background_color: '#F6FFF8',
         display: 'standalone',
         icons: [
           {
