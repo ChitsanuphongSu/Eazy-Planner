@@ -5,15 +5,16 @@ import TodoModal from '../components/todo/TodoModal';
 import { Plus, Search, SlidersHorizontal, Filter } from 'lucide-react';
 
 export default function TodoPage() {
-  const {
-    filter, sortBy, searchQuery, categories,
-    setFilter, setSortBy, setSearchQuery,
-    getFilteredTasks, stats,
-  } = useTodo();
-
   const [modalOpen, setModalOpen] = useState(false);
   const [editTask, setEditTask] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [isSelectionMode, setIsSelectionMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState(new Set());
+  const { 
+    tasks, filter, sortBy, searchQuery, selectedTags, categories,
+    setFilter, setSortBy, setSearchQuery, setSelectedTags,
+    getFilteredTasks, stats, deleteMultipleTasks 
+  } = useTodo();
 
   const filteredTasks = getFilteredTasks();
 
@@ -41,6 +42,36 @@ export default function TodoPage() {
     { id: 'title', label: 'ชื่อ' },
   ];
 
+  // Get all unique tags from tasks
+  const hasNoTagTasks = tasks.some(t => !t.tags || t.tags.length === 0);
+  const allTags = Array.from(new Set(tasks.flatMap(t => t.tags || []))).sort();
+  if (hasNoTagTasks) allTags.unshift('_NO_TAG_');
+
+  const toggleTagFilter = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter(t => t !== tag));
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+    if (window.confirm(`ยืนยันการลบ ${selectedIds.size} รายการที่เลือก?`)) {
+      await deleteMultipleTasks(Array.from(selectedIds));
+      setSelectedIds(new Set());
+      setIsSelectionMode(false);
+    }
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredTasks.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(filteredTasks.map(t => t.id)));
+    }
+  };
+
   return (
     <div className="page">
       <div className="page-header">
@@ -48,16 +79,40 @@ export default function TodoPage() {
           <span style={{ fontSize: '1.5rem' }}>✅</span>
           สิ่งที่ต้องทำ
         </h1>
-        <button
-          onClick={() => {
-            setEditTask(null);
-            setModalOpen(true);
-          }}
-          className="btn btn-primary btn-sm hide-on-mobile"
-        >
-          <Plus size={16} />
-          เพิ่มงาน
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          {!isSelectionMode ? (
+            <>
+              <button
+                onClick={() => setIsSelectionMode(true)}
+                className="btn btn-ghost btn-sm"
+              >
+                เลือก
+              </button>
+              <button
+                onClick={() => {
+                  setEditTask(null);
+                  setModalOpen(true);
+                }}
+                className="btn btn-primary btn-sm hide-on-mobile"
+              >
+                <Plus size={16} />
+                เพิ่มงาน
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={toggleSelectAll} className="btn btn-ghost btn-sm">
+                {selectedIds.size === filteredTasks.length ? 'ยกเลิกทั้งหมด' : 'เลือกทั้งหมด'}
+              </button>
+              <button onClick={handleBulkDelete} className="btn btn-danger btn-sm" disabled={selectedIds.size === 0}>
+                ลบ ({selectedIds.size})
+              </button>
+              <button onClick={() => { setIsSelectionMode(false); setSelectedIds(new Set()); }} className="btn btn-secondary btn-sm">
+                ยกเลิก
+              </button>
+            </>
+          )}
+        </div>
       </div>
 
       <div className="page-content">
@@ -125,47 +180,87 @@ export default function TodoPage() {
           </div>
         </div>
 
-        {/* Filter Tabs */}
+        {/* Filter Tabs & Tags */}
         {showFilters && (
-          <div style={{
-            display: 'flex',
-            gap: '6px',
-            marginBottom: '16px',
-            flexWrap: 'wrap',
-            animation: 'fadeInUp 200ms ease',
-          }}>
-            {filterTabs.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setFilter(tab.id)}
-                style={{
-                  padding: '6px 14px',
-                  borderRadius: 'var(--radius-full)',
-                  fontSize: 'var(--font-size-xs)',
-                  fontWeight: 500,
-                  background: filter === tab.id ? 'var(--color-primary)' : 'var(--color-surface)',
-                  color: filter === tab.id ? '#fff' : 'var(--color-text-secondary)',
-                  border: `1.5px solid ${filter === tab.id ? 'var(--color-primary)' : 'var(--color-border)'}`,
-                  cursor: 'pointer',
-                  transition: 'all 150ms ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                }}
-              >
-                {tab.label}
-                {tab.count !== null && (
-                  <span style={{
-                    background: filter === tab.id ? 'rgba(255,255,255,0.2)' : 'var(--color-bg)',
-                    padding: '0 6px',
-                    borderRadius: '10px',
-                    fontSize: '10px',
-                  }}>
-                    {tab.count}
-                  </span>
+          <div style={{ animation: 'fadeInUp 200ms ease' }}>
+            <div style={{
+              display: 'flex',
+              gap: '6px',
+              marginBottom: '12px',
+              flexWrap: 'wrap',
+            }}>
+              {filterTabs.map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setFilter(tab.id)}
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: 'var(--radius-full)',
+                    fontSize: 'var(--font-size-xs)',
+                    fontWeight: 500,
+                    background: filter === tab.id ? 'var(--color-primary)' : 'var(--color-surface)',
+                    color: filter === tab.id ? '#fff' : 'var(--color-text-secondary)',
+                    border: `1.5px solid ${filter === tab.id ? 'var(--color-primary)' : 'var(--color-border)'}`,
+                    cursor: 'pointer',
+                    transition: 'all 150ms ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                  }}
+                >
+                  {tab.label}
+                  {tab.count !== null && (
+                    <span style={{
+                      background: filter === tab.id ? 'rgba(255,255,255,0.2)' : 'var(--color-bg)',
+                      padding: '0 6px',
+                      borderRadius: '10px',
+                      fontSize: '10px',
+                    }}>
+                      {tab.count}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+
+            {/* Tag Filter Bar */}
+            {allTags.length > 0 && (
+              <div style={{
+                display: 'flex',
+                gap: '6px',
+                marginBottom: '16px',
+                overflowX: 'auto',
+                paddingBottom: '4px',
+                WebkitOverflowScrolling: 'touch',
+              }}>
+                {allTags.map(tag => (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTagFilter(tag)}
+                    style={{
+                      padding: '4px 12px',
+                      borderRadius: 'var(--radius-md)',
+                      fontSize: '11px',
+                      whiteSpace: 'nowrap',
+                      background: selectedTags.includes(tag) ? 'var(--color-primary-light)' : 'var(--color-bg)',
+                      color: selectedTags.includes(tag) ? 'var(--color-primary-darker)' : 'var(--color-text-secondary)',
+                      border: `1px solid ${selectedTags.includes(tag) ? 'var(--color-primary)' : 'var(--color-border-light)'}`,
+                      fontWeight: selectedTags.includes(tag) ? 600 : 400,
+                    }}
+                  >
+                    {tag === '_NO_TAG_' ? 'ไม่มีแท็ก' : `#${tag}`}
+                  </button>
+                ))}
+                {selectedTags.length > 0 && (
+                  <button 
+                    onClick={() => setSelectedTags([])}
+                    style={{ fontSize: '11px', color: 'var(--color-danger)', background: 'none', border: 'none', marginLeft: '4px' }}
+                  >
+                    ล้างแท็ก
+                  </button>
                 )}
-              </button>
-            ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -180,7 +275,14 @@ export default function TodoPage() {
         </div>
 
         {/* Task List */}
-        <TodoList tasks={filteredTasks} onEdit={handleEdit} />
+        <TodoList 
+          tasks={filteredTasks} 
+          onEdit={handleEdit} 
+          isSelectionMode={isSelectionMode}
+          selectedIds={selectedIds}
+          setSelectedIds={setSelectedIds}
+          setIsSelectionMode={setIsSelectionMode}
+        />
       </div>
 
       {/* FAB for mobile */}

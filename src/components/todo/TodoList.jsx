@@ -1,7 +1,9 @@
 import React from 'react';
 import TodoItem from './TodoItem';
 
-export default function TodoList({ tasks, onEdit }) {
+export default function TodoList({ 
+  tasks, onEdit, isSelectionMode, selectedIds, setSelectedIds, setIsSelectionMode 
+}) {
   if (tasks.length === 0) {
     return (
       <div className="empty-state">
@@ -22,7 +24,19 @@ export default function TodoList({ tasks, onEdit }) {
     }}>
       {tasks.map((task, index) => (
         <div key={task.id} style={{ animationDelay: `${index * 50}ms` }}>
-          <TodoItem task={task} onEdit={onEdit} />
+          <TodoItem 
+            task={task} 
+            onEdit={onEdit} 
+            isSelectionMode={isSelectionMode}
+            isSelected={selectedIds?.has(task.id)}
+            onToggleSelect={(id) => {
+              const next = new Set(selectedIds);
+              if (next.has(id)) next.delete(id);
+              else next.add(id);
+              setSelectedIds(next);
+            }}
+            onEnterSelection={() => setIsSelectionMode(true)}
+          />
         </div>
       ))}
     </div>

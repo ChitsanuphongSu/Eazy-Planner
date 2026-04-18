@@ -5,9 +5,17 @@ import { Check, ChevronDown, ChevronRight, Calendar, GripVertical, Edit2, Trash2
 import { format, isPast, isToday } from 'date-fns';
 import { th } from 'date-fns/locale';
 
-export default function TodoItem({ task, onEdit }) {
+export default function TodoItem({ 
+  task, onEdit, isSelectionMode, isSelected, onToggleSelect, onEnterSelection 
+}) {
   const { toggleTask, toggleSubtask, deleteTask } = useTodo();
   const [expanded, setExpanded] = useState(false);
+  
+  // Gestures state
+  const [swipeOffset, setSwipeOffset] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const longPressTimer = React.useRef(null);
 
   const priority = PRIORITY_LEVELS.find(p => p.value === task.priority);
   const hasSubtasks = task.subtasks?.length > 0;
@@ -23,50 +31,161 @@ export default function TodoItem({ task, onEdit }) {
 
   const due = dueDateLabel();
 
-  return (
-    <div
-      className="card"
-      style={{
-        padding: '12px 16px',
-        opacity: task.completed ? 0.6 : 1,
-        transition: 'all 200ms ease',
-        animation: 'fadeInUp 300ms ease forwards',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-        {/* Grip Handle */}
-        <div style={{
-          color: 'var(--color-text-muted)',
-          cursor: 'grab',
-          marginTop: '2px',
-          opacity: 0.4,
-          flexShrink: 0,
-        }}>
-          <GripVertical size={16} />
-        </div>
+  // --- Long Press Logic ---
+  const startLongPress = () => {
+    longPressTimer.current = setTimeout(() => {
+      onEnterSelection && onEnterSelection();
+      onToggleSelect && onToggleSelect(task.id);
+      window.navigator.vibrate && window.navigator.vibrate(50);
+    }, 600);
+  };
 
-        {/* Checkbox */}
-        <button
-          onClick={() => toggleTask(task.id)}
-          style={{
-            width: '22px',
-            height: '22px',
-            borderRadius: '6px',
-            border: `2px solid ${task.completed ? 'var(--color-success)' : priority?.color || 'var(--color-border)'}`,
-            background: task.completed ? 'var(--color-success)' : 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            transition: 'all 200ms ease',
-            flexShrink: 0,
-            marginTop: '1px',
-          }}
-        >
-          {task.completed && (
-            <Check size={14} color="white" strokeWidth={3} style={{ animation: 'checkmark 300ms ease' }} />
+  const stopLongPress = () => {
+    if (longPressTimer.current) clearTimeout(longPressTimer.current);
+  };
+
+  // --- Swipe Logic ---
+  const handleTouchStart = (e) => {
+    if (isSelectionMode) return;
+    setStartX(e.touches[0].clientX);
+    setIsSwiping(true);
+    startLongPress();
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isSwiping || isSelectionMode) return;
+    const currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+    
+    // Only allow left swipe (negative offset) up to -80px
+    if (diff < 0) {
+      setSwipeOffset(Math.max(diff, -100));
+      if (Math.abs(diff) > 10) stopLongPress();
+    } else {
+      setSwipeOffset(0);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    setIsSwiping(false);
+    stopLongPress();
+    if (swipeOffset < -60) {
+      setSwipeOffset(-80); // Snap to open
+    } else {
+      setSwipeOffset(0); // Snap to closed
+    }
+  };
+
+  return (
+    <div 
+      className="todo-item-container" 
+      style={{ position: 'relative', overflow: 'hidden', borderRadius: 'var(--radius-lg)' }}
+      onMouseDown={startLongPress}
+      onMouseUp={stopLongPress}
+      onMouseLeave={stopLongPress}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Swipe Delete Action (Behind) */}
+      <div 
+        onClick={() => { if(window.confirm('ลบงานนี้?')) deleteTask(task.id); }}
+        style={{
+          position: 'absolute',
+          right: 0,
+          top: 0,
+          bottom: 0,
+          width: '80px',
+          background: 'var(--color-danger)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          zIndex: 1,
+          opacity: swipeOffset < -20 ? 1 : 0,
+          transition: 'opacity 0.2s ease',
+        }}
+      >
+        <Trash2 size={20} />
+      </div>
+
+      <div
+        className={`card ${isSelectionMode ? 'selection-mode' : ''} ${isSelected ? 'selected' : ''}`}
+        style={{
+          padding: '12px 16px',
+          opacity: task.completed ? 0.6 : 1,
+          transition: 'transform 0.2s ease, background 0.2s ease',
+          animation: 'fadeInUp 300ms ease forwards',
+          transform: `translateX(${swipeOffset}px)`,
+          zIndex: 2,
+          position: 'relative',
+          cursor: isSelectionMode ? 'pointer' : 'default',
+          border: isSelectionMode && isSelected ? '1.5px solid var(--color-primary)' : '1px solid var(--color-border-light)',
+          background: isSelectionMode && isSelected ? 'var(--color-bg-secondary)' : 'var(--color-surface)',
+        }}
+        onClick={() => {
+          if (isSelectionMode) {
+            onToggleSelect(task.id);
+          }
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+          {/* Selection Checkbox */}
+          {isSelectionMode && (
+             <div style={{
+               width: '22px',
+               height: '22px',
+               borderRadius: '50%',
+               border: `2px solid ${isSelected ? 'var(--color-primary)' : 'var(--color-border)'}`,
+               background: isSelected ? 'var(--color-primary)' : 'transparent',
+               display: 'flex',
+               alignItems: 'center',
+               justifyContent: 'center',
+               flexShrink: 0,
+               marginTop: '1px',
+               animation: 'fadeInScale 200ms ease',
+             }}>
+               {isSelected && <Check size={12} color="white" strokeWidth={4} />}
+             </div>
           )}
-        </button>
+
+          {/* Grip Handle (Only if NOT in selection mode) */}
+          {!isSelectionMode && (
+            <div style={{
+              color: 'var(--color-text-muted)',
+              cursor: 'grab',
+              marginTop: '2px',
+              opacity: 0.4,
+              flexShrink: 0,
+            }}>
+              <GripVertical size={16} />
+            </div>
+          )}
+
+          {/* Regular Checkbox (Hidden in selection mode) */}
+          {!isSelectionMode && (
+            <button
+              onClick={(e) => { e.stopPropagation(); toggleTask(task.id); }}
+              style={{
+                width: '22px',
+                height: '22px',
+                borderRadius: '6px',
+                border: `2px solid ${task.completed ? 'var(--color-success)' : priority?.color || 'var(--color-border)'}`,
+                background: task.completed ? 'var(--color-success)' : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 200ms ease',
+                flexShrink: 0,
+                marginTop: '1px',
+              }}
+            >
+              {task.completed && (
+                <Check size={14} color="white" strokeWidth={3} style={{ animation: 'checkmark 300ms ease' }} />
+              )}
+            </button>
+          )}
 
         {/* Content */}
         <div style={{ flex: 1, minWidth: 0 }}>

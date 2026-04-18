@@ -20,6 +20,7 @@ export function TodoProvider({ children }) {
   const [filter, setFilter] = useState('all');
   const [sortBy, setSortBy] = useState('createdAt');
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
   const [loadingTasks, setLoadingTasks] = useState(true);
 
   // Load Tasks and Categories from Firestore
@@ -91,6 +92,12 @@ export function TodoProvider({ children }) {
     await deleteDocument(currentUser.uid, 'tasks', id);
   };
 
+  const deleteMultipleTasks = async (ids) => {
+    if (!currentUser || !ids || ids.length === 0) return;
+    // For simplicity, we delete them one by one. In production, consider Firestore batched writes.
+    await Promise.all(ids.map(id => deleteDocument(currentUser.uid, 'tasks', id)));
+  };
+
   const reorderTasks = async (newTasks) => {
     if (!currentUser) return;
     // In a real production app, reordering might require batched writes.
@@ -138,6 +145,20 @@ export function TodoProvider({ children }) {
       filtered = filtered.filter(t => t.category === filter);
     }
 
+    // Tag Filtering (OR Logic)
+    if (selectedTags.length > 0) {
+      filtered = filtered.filter(t => {
+        const taskTags = t.tags || [];
+        // Show task if:
+        // 1. It matches one of the selected tags
+        // 2. OR if '_NO_TAG_' is selected and it has no tags
+        const matchTag = selectedTags.some(tag => tag !== '_NO_TAG_' && taskTags.includes(tag));
+        const matchNoTag = selectedTags.includes('_NO_TAG_') && taskTags.length === 0;
+        
+        return matchTag || matchNoTag;
+      });
+    }
+
     switch (sortBy) {
       case 'priority': {
         const order = { urgent: 0, high: 1, medium: 2, low: 3 };
@@ -170,10 +191,10 @@ export function TodoProvider({ children }) {
 
   return (
     <TodoContext.Provider value={{
-      tasks, categories, filter, sortBy, searchQuery, loadingTasks, stats,
-      addTask, updateTask, toggleTask, deleteTask,
+      tasks, categories, filter, sortBy, searchQuery, selectedTags, loadingTasks, stats,
+      addTask, updateTask, toggleTask, deleteTask, deleteMultipleTasks,
       reorderTasks, toggleSubtask,
-      setFilter, setSortBy, setSearchQuery,
+      setFilter, setSortBy, setSearchQuery, setSelectedTags,
       addCategory, deleteCategory,
       getFilteredTasks,
     }}>
