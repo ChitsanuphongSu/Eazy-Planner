@@ -44,8 +44,15 @@ export function SettingsProvider({ children }) {
       'appTheme',
       (data) => {
         setThemePrefs(data);
+        // Method 2: Sync profile info into the settings document for easy identification in Firebase Console
+        if (!data.userEmail || data.userEmail !== currentUser.email) {
+          updateSettings(currentUser.uid, 'settings', 'appTheme', { 
+            userEmail: currentUser.email,
+            lastSynced: new Date().toISOString() 
+          });
+        }
       },
-      defaultThemeSettings
+      { ...defaultThemeSettings, userEmail: currentUser.email }
     );
 
     return unsub;
