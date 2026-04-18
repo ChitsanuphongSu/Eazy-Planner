@@ -18,9 +18,21 @@ export default defineConfig({
         icons: [
           {
             src: 'favicon.svg',
-            sizes: '192x192 512x512',
+            sizes: 'any',
             type: 'image/svg+xml',
             purpose: 'any'
+          },
+          {
+            src: 'pwa-icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any'
+          },
+          {
+            src: 'pwa-icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       }
