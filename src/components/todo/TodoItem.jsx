@@ -267,12 +267,22 @@ export default function TodoItem({
               flexDirection: 'row', 
               gap: '4px', 
               flexShrink: 0,
-              alignItems: 'center'
+              alignItems: 'center',
+              width: '72px', // Fixed width for two 34px buttons + gap
+              justifyContent: 'flex-end'
             }}>
               <button
                 onClick={(e) => { e.stopPropagation(); onEdit(task); }}
                 className="btn btn-icon btn-ghost"
-                style={{ width: '34px', height: '34px', background: 'var(--color-bg-secondary)' }}
+                style={{ 
+                  width: '34px', 
+                  height: '34px', 
+                  background: 'var(--color-bg-secondary)',
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
               >
                 <Edit2 size={15} color="var(--color-text-secondary)" />
               </button>
@@ -282,7 +292,16 @@ export default function TodoItem({
                   if (window.confirm('ยืนยันการลบงานนี้?')) deleteTask(task.id); 
                 }}
                 className="btn btn-icon btn-ghost"
-                style={{ width: '34px', height: '34px', background: 'var(--color-bg-secondary)', color: 'var(--color-danger)' }}
+                style={{ 
+                  width: '34px', 
+                  height: '34px', 
+                  background: 'var(--color-bg-secondary)', 
+                  color: 'var(--color-danger)',
+                  flexShrink: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
               >
                 <Trash2 size={15} />
               </button>
