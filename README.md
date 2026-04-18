@@ -1,65 +1,130 @@
-# 🌿 FlowSpace (formerly Eazy-Planner)
+# 🌿 FlowSpace
 
-![FlowSpace Logo](public/favicon.svg)
-
-**FlowSpace** คือแอปพลิเคชันเว็บอัจฉริยะแบบครบวงจร (All-in-one minimal planner) ที่ออกแบบมาเพื่อช่วยคุณจัดการตารางชีวิต ตารางเรียน/งาน, สิ่งที่ต้องทำ (To-Do List), และปฏิทินรวมไว้ด้วยกัน โดดเด่นด้วยดีไซน์สไตล์มินิมอล (Minimalist Design) ถนอมสายตา และมีระบบ PWA ที่ช่วยให้คุณสามารถติดตั้งลงเครื่องได้ฟรี 100% ครอบคลุมทุกระบบปฏิบัติการ!
-
-🔗 **[เข้าใช้งานแอปพลิเคชัน FlowSpace ได้ที่นี่](https://flowspace-planner.vercel.app)**
-
----
-
-## ✨ ฟีเจอร์หลัก (Key Features)
-
-- 📅 **Schedule Manager (ตารางเรียน/งาน):** สร้างและจัดตารางเวลาในแต่ละวันได้อย่างละเอียด รองรับการลาก-วาง สลับวันเวลา พร้อมคำนวณระยะเวลาครอบคลุมตั้งแต่วันจันทร์-อาทิตย์
-- ✅ **Smart To-Do List:** จดบันทึกสิ่งที่ต้องทำ แบ่งหมวดหมู่ เลือกระดับความสำคัญ (เร่งด่วน/สูง/ปานกลาง/ต่ำ) พร้อมช่องค้นหาและตัวกรองที่ใช้งานง่ายสุดๆ
-- 📆 **Calendar Tracker:** ปฏิทินแสดงงานและกิจกรรมประจำเดือนแบบครบจบในหน้าเดียว เห็นภาพรวมทั้งเดือนง่ายๆ
-- 🎨 **Custom Themes & Colors:** ปรับเปลี่ยนสีสันแอปให้เข้ากับสไตล์คุณ มีให้เลือกทั้ง Dark Mode/Light Mode และแค็ตตาล็อกสีหลัก 5 สไตล์ (Matcha, Ocean, Sakura, Lavender, Peach)
-- ☁️ **Cloud Real-time Sync:** ข้อมูลทุกอย่างที่คุณสร้างจะถูกซิงค์ผ่านปุ่มบัญชี Google (Firebase) เปิดอุปกรณ์ไหนในโลกข้อมูลก็เชื่อมกันทันที
-- 📱 **PWA Native Installs:** โหลดแอปลงประดับจอได้ทันทีโดยไม่ต้องผ่านช่องทาง App Store ใดๆ กินพื้นที่น้อยและรวดเร็ว
+<div align="center">
+  <img src="public/favicon.svg" width="100" height="100" />
+  <h3>Your Ultimate Minimalist Productivity Ecosystem</h3>
+  <p>A high-performance, real-time synchronized planner for the modern professional.</p>
+  
+  [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://flowspace-planner.vercel.app)
+  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#)
+  [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](#)
+  [![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white)](#)
+</div>
 
 ---
 
-## 📲 วิธีติดตั้งแอปลงในเครื่อง (PWA Installation Guide)
+## 📖 Overview
 
-แอปพลิเคชัน FlowSpace ถูกสร้างด้วยระบบ **Progressive Web App (PWA)** ทำให้คุณสามารถติดตั้งแอปนี้เพื่อใช้งานในระดับเครื่อง (Native-like) ได้โดยไม่ต้องไปดาวน์โหลดจากสโตร์ให้ยุ่งยาก และ **ฟรี 100%** สำหรับทุกระบบปฏิบัติการครับ
+**FlowSpace** is a unified productivity platform that merges a visual **Weekly Schedule**, a high-performance **Todo Engine**, and a **Monthly Event Tracker** into one cohesive interface. Built with a focus on minimalism and fluid UX, it provides a "Flow" state experience for students and professionals alike.
 
-โปรดเข้าไปที่เว็บไซต์: **[flowspace-planner.vercel.app](https://flowspace-planner.vercel.app)** ผ่านเบราว์เซอร์ของอุปกรณ์คุณ แล้วทำตามขั้นตอนต่อไปนี้
+Designed with a **Glassmorphism** aesthetic and a proprietary **"Matcha Green"** pastel theme, FlowSpace is as beautiful as it is functional.
 
-### 🍎 1. สำหรับ iOS (iPhone / iPad)
-*หมายเหตุ: ต้องใช้เบราว์เซอร์ Safari เท่านั้นสำหรับ iOS*
-1. เปิดเว็บไซต์ผ่าน **Safari**
-2. แตะปุ่ม `แชร์ (Share)` ที่แถบเมนูด้านล่าง (ไอคอนรูปสี่เหลี่ยมมีลูกศรชี้ขึ้น)
-3. เลื่อนลงมาหารายการคำสั่ง แล้วแตะ **"เพิ่มไปยังหน้าจอโฮม (Add to Home Screen)"**
-4. แตะปุ่ม `เพิ่ม (Add)` มุมขวาบน
-5. ไอคอนแอป **FlowSpace** จะไปปรากฏบนหน้าจอโทรศัพท์พร้อมใช้งานแบบเต็มจอ!
+## ✨ Core Pillars
 
-### 🤖 2. สำหรับ Android (มือถือ/แท็บเล็ต)
-1. เปิดเว็บไซต์ผ่าน **Google Chrome** (หรือเบราว์เซอร์ที่คุณใช้งานประจำ)
-2. ระบบจะมีแถบข้อความเด้งขึ้นมาบริเวณพื้นที่ด้านล่างจอว่า **"เพิ่ม FlowSpace ลงในหน้าจอหลัก"** (Add FlowSpace to Home screen) ให้กดเพื่อยินยอม
-3. *[วิธีทางเลือก]* หากไม่เห็นแถบแจ้งเตือน ให้กดปุ่ม `เมนู 3 จุด` มุมขวาบน แล้วเลือก **"ติดตั้งแอป (Install App)"**
-4. ระบบจะทำการเพิ่มแอปลงหน้าจอสมาร์ทโฟนของคุณโดยอัตโนมัติ
+### 📅 Visual Schedule Manager
+Plan your week with a high-fidelity time-grid. 
+- **Atomic Time Slots:** Granular control from 06:00 to 22:00.
+- **Color-Coded Categories:** Instantly distinguish between Study, Work, and Personal tasks.
+- **Smart Overlays:** Visual cues for active/past sessions.
 
-### 💻 3. สำหรับ Computer PC (Windows / Linux)
-1. เปิดเว็บไซต์ผ่านเบราว์เซอร์ **Google Chrome** หรือ **Microsoft Edge**
-2. มองหาไอคอนทาง **มุมขวาบนของแถบใส่ที่อยู่เว็บ (Address Bar)** ซึ่งจะปรากฏรูปหน้าจอคอมพิวเตอร์และมีเครื่องหมายบวก (+) 
-3. เอาเมาส์ไปชี้จะมีข้อความเด้งว่า **"App available. Install FlowSpace"** หรือ "ติดตั้งแอปพลิเคชัน" ให้คลิกที่นั่น
-4. กดปุ่ม `Install (ติดตั้ง)`
-5. แอปจะถูกจำลองเป็นหน้าต่างโปรแกรมในระบบให้ทันที และคุณสามารถปักหมุดไอคอนลงบน Taskbar หรือ Start Menu ของ Window ได้เหมือนโปรแกรมคอมพิวเตอร์เลย!
+### ✅ Pro Todo Engine
+More than just a checklist. 
+- **Multidimensional Priority:** Priority levels (Urgent to Low) with color semantics.
+- **Nested Task Management:** Subtask tracking with real-time progress bars.
+- **Advanced Bulk Actions:** Selection mode for mass deletion and organization.
+- **Auto-Layout Optimization:** Guaranteed visibility and accessibility across all screen sizes (Mobile, Tablet, Desktop).
 
-### 🍏 4. สำหรับ MacOS (Macbook / iMac)
-1. เปิดเว็บไซต์ผ่าน **Google Chrome**
-2. ที่มุมขวาบนของแถบ Address Bar (ช่องพิมพ์เว็บไซต์) ให้คลิกที่ไอคอนสำหรับติดตั้งแอป PWA (เหมือนขั้นตอนของ Windows)
-3. กดปุ่ม `Install` 
-4. คุณสามารถค้นหาและเปิดใช้งาน FlowSpace ได้ทันทีผ่านเครื่องมือ **Launchpad** บน Mac ของคุณ
+### ☁️ Real-time Cloud Infrastructure
+- **Google Auth Integration:** Secure, one-tap login.
+- **Firestore Real-time Sync:** Changes reflect instantly across all your devices.
+- **PWA Ready:** Installable on iOS, Android, and PC. Works offline with background sync.
 
 ---
 
-## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
-- **Frontend Code:** React.js + Vite (Fast Bundler)
-- **Styling:** CSS + Lucide React (Icons)
-- **Database / Auth:** Firebase Firestore & Firebase Google Auth
-- **PWA Capabilities:** vite-plugin-pwa
-- **Deployment:** Vercel
+## 🛠️ Technology Stack
+
+| Layer | Technology | Rationale |
+|---|---|---|
+| **Frontend** | React.js 18 | Component-based architecture for high maintainability. |
+| **Build Tool** | Vite | Lightning-fast HMR and optimized production bundles. |
+| **Styling** | Vanilla CSS | Custom design tokens and modern CSS variables for a unique "Matcha" aesthetic. |
+| **Backend** | Firebase | Serverless infrastructure for real-time data persistence. |
+| **Icons** | Lucide React | Clean, consistent, and bold iconography. |
+| **PWA** | Vite-PWA | Seamless installation and offline caching capabilities. |
 
 ---
-*Developed with Minimalist Philosophy.* 🌿
+
+## 🚀 Getting Started (for Developers)
+
+To run FlowSpace locally:
+
+### 1. Prerequisites
+- Node.js (v16.14.0 or higher)
+- npm or yarn
+
+### 2. Installation
+```bash
+# Clone the repository
+git clone https://github.com/ChitsanuphongSu/FlowSpace-formerly-Eazy-Planner.git
+
+# Navigate to directory
+cd Antigravity (or project root)
+
+# Install dependencies
+npm install
+```
+
+### 3. Setup Environment
+Create a `.env` file in the root directory and add your Firebase configuration:
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 4. Run Development Server
+```bash
+npm run dev
+```
+
+---
+
+## 📲 วิธีติดตั้งแอปลงในเครื่อง (User Installation Thai)
+
+คุณสามารถติดตั้ง FlowSpace เพื่อใช้งานเหมือนแอปในเครื่องได้ฟรีผ่านระบบ PWA:
+
+### 🍎 iOS (Safari)
+1. เปิดแอปผ่าน **Safari**
+2. กดปุ่ม `แชร์ (Share)` -> เลือก **"เพิ่มไปยังหน้าจอโฮม (Add to Home Screen)"**
+
+### 🤖 Android (Chrome)
+1. กดเมนู `3 จุด` มุมขวาบน -> เลือก **"ติดตั้งแอป (Install App)"**
+
+### 💻 Computer (Chrome / Edge)
+1. คลิกไอคอน **"ติดตั้งแอป"** ทางด้านขวาของ Address Bar ด้านบน
+
+---
+
+## 📁 Project Structure
+
+```text
+src/
+├── components/         # Reusable UI Components
+│   ├── common/         # Modals, Widgets, Buttons
+│   ├── schedule/       # Grid & Schedule Logic
+│   └── todo/           # Todo Items & List Logic
+├── contexts/           # Global State Management (React Context)
+├── pages/              # Main Page Views
+├── utils/              # Helper Functions & Constants
+└── App.jsx             # Main Application Routing
+```
+
+---
+
+<div align="center">
+  <p><i>Developed with Minimalist Philosophy & High Performance Logic.</i></p>
+  <p>© 2026 FlowSpace Project</p>
+</div>
