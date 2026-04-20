@@ -23,13 +23,13 @@ export default defineConfig({
             purpose: 'any'
           },
           {
-            src: 'flowspace-any.png',
+            src: 'flowspace-any-v3.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any'
           },
           {
-            src: 'flowspace-maskable.png',
+            src: 'flowspace-maskable-v3.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable'
