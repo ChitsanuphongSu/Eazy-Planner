@@ -26,13 +26,7 @@ export default defineConfig({
             src: 'flowspace-any-v4.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any'
-          },
-          {
-            src: 'flowspace-maskable-v4.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'maskable'
+            purpose: 'any maskable'
           }
         ]
       }
