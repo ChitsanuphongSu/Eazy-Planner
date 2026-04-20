@@ -7,8 +7,18 @@
     <meta name="theme-color" content="#6B9080" />
     <meta name="description" content="แอปวางแผนอัจฉริยะ — จัดตารางเรียน/งาน, To-Do List, และปฏิทิน ในที่เดียว" />
     <title>FlowSpace — จัดการตารางชีวิต</title>
+    <script>
+      (function() {
+        try {
+          const theme = localStorage.getItem('flowspace-theme');
+          const color = localStorage.getItem('flowspace-color');
+          if (theme) document.documentElement.setAttribute('data-theme', theme);
+          if (color) document.documentElement.setAttribute('data-color', color);
+        } catch (e) {}
+      })();
+    </script>
   </head>
-  <body style="background-color: #F6FFF8;">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

@@ -19,6 +19,10 @@ export function SettingsProvider({ children }) {
     document.documentElement.setAttribute('data-theme', themePrefs.theme);
     document.documentElement.setAttribute('data-color', themePrefs.color);
     
+    // Persist to localStorage for early initialization script in index.html
+    localStorage.setItem('flowspace-theme', themePrefs.theme);
+    localStorage.setItem('flowspace-color', themePrefs.color);
+    
     // Dynamically update mobile browser status bar color to match the top header's surface color
     setTimeout(() => {
       const surfaceColor = getComputedStyle(document.documentElement).getPropertyValue('--color-surface').trim();
